@@ -1,32 +1,32 @@
 package com.ideafix.model.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comment {
+@Entity
+@Table(name = "comment")
+public class Comment implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
     private long id;
 
-//    ?
-    private User author;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private ShortUser author;
 
-//    ?
+    @Column(name = "idea_id")
     private long ideaId;
 
     @Column(name = "text")
     private String text;
 
     @Column(name = "date")
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Comment(long id, User author, long ideaId,
-                   String text, Date date) {
-        this.id = id;
+    public Comment(ShortUser author, long ideaId, String text, Date date) {
         this.author = author;
         this.ideaId = ideaId;
         this.text = text;
@@ -36,11 +36,11 @@ public class Comment {
     public Comment() {
     }
 
-    public User getAuthor() {
+    public ShortUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(ShortUser author) {
         this.author = author;
     }
 

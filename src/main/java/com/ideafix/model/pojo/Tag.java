@@ -3,10 +3,11 @@ package com.ideafix.model.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tag")
-public class Tag {
+public class Tag implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -16,14 +17,12 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    public Tag() {
-
+    public Tag(String name) {
+        this.name = name;
     }
 
-    public Tag(long id, String name) {
+    public Tag() {
 
-        this.id = id;
-        this.name = name;
     }
 
     public long getId() {

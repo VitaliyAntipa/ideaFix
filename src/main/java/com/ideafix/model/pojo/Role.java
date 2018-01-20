@@ -6,10 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -27,8 +28,11 @@ public class Role {
         return name;
     }
 
-    public Role() {
+    public Role(String name) {
+        this.name = name;
+    }
 
+    public Role() {
     }
 
 

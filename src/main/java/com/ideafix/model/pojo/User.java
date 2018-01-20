@@ -34,9 +34,25 @@ public class User extends AbstractUser implements Serializable {
     @Column(name = "is_banned")
     private boolean isBanned;
 
-    public User() {
+    public User(String name, String nickname,
+                String pic, boolean isBanned,
+                int age, Role role, String email,
+                String city, String country, String about,
+                String pic1, boolean isBanned1) {
+        super(name, nickname, pic, isBanned);
+        this.age = age;
+        this.role = role;
+        this.email = email;
+        this.city = city;
+        this.country = country;
+        this.about = about;
+        this.pic = pic1;
+        this.isBanned = isBanned1;
     }
 
+    public User() {
+        super();
+    }
 
     public int getAge() {
         return age;

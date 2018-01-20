@@ -32,11 +32,12 @@ public class IdeaList implements Serializable{
     @JoinColumn(name = "user_id")
     private ShortUser author;
 
-    public IdeaList(long id, String name, boolean isPrivate, Set<Idea> setOfIdeas) {
-        this.id = id;
+    public IdeaList(String name, boolean isPrivate,
+                    Set<Idea> setOfIdeas, ShortUser author) {
         this.name = name;
         this.isPrivate = isPrivate;
         this.setOfIdeas = setOfIdeas;
+        this.author = author;
     }
 
     public IdeaList() {

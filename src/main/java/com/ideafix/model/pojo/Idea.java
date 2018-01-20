@@ -1,5 +1,7 @@
 package com.ideafix.model.pojo;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "idea")
-public class Idea implements Serializable{
+public class Idea implements Serializable {
 
     @Id
     @Column(name = "id")
@@ -45,10 +47,23 @@ public class Idea implements Serializable{
     @JoinColumn(name = "idea_id")
     private List<Media> listOfMedia;
 
-////    @ManyToOne(fetch = FetchType.EAGER)
-////    @JoinTable(name = "Comment",joinColumns ={@JoinColumn(name = "idea_id")})
-//    private List<Comment> listOfComments;
+    @Formula("(Select count(*) from comment c where c.idea_id = id)")
+    private long countOfComments;
 
+    @Formula("(Select count(*) from likes l where l.idea_id = id)")
+    private long countOfLikes;
+
+    public Idea(String title, String bigDescription, ShortUser author,
+                Date date, boolean isBanned, Set<Tag> setOfTags,
+                List<Media> listOfMedia) {
+        this.title = title;
+        this.bigDescription = bigDescription;
+        this.author = author;
+        this.date = date;
+        this.isBanned = isBanned;
+        this.setOfTags = setOfTags;
+        this.listOfMedia = listOfMedia;
+    }
 
     public Idea() {
     }
@@ -115,5 +130,21 @@ public class Idea implements Serializable{
 
     public void setListOfMedia(List<Media> listOfMedia) {
         this.listOfMedia = listOfMedia;
+    }
+
+    public long getCountOfComments() {
+        return countOfComments;
+    }
+
+    public void setCountOfComments(long countOfComments) {
+        this.countOfComments = countOfComments;
+    }
+
+    public long getCountOfLikes() {
+        return countOfLikes;
+    }
+
+    public void setCountOfLikes(long countOfLikes) {
+        this.countOfLikes = countOfLikes;
     }
 }

@@ -26,8 +26,7 @@ public class AbstractUser {
     public AbstractUser() {
     }
 
-    public AbstractUser(long id, String name, String nickname, String pic, boolean isBanned) {
-        this.id = id;
+    public AbstractUser(String name, String nickname, String pic, boolean isBanned) {
         this.name = name;
         this.nickname = nickname;
         this.pic = pic;
