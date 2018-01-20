@@ -1,14 +1,19 @@
 package com.ideafix.model.pojo;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "Role")
+@Table(name = "role")
 public class Role {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @JsonIgnore
     private long id;
 
     @Column(name = "name")
@@ -26,11 +31,6 @@ public class Role {
 
     }
 
-    public Role(long id, String name) {
-
-        this.id = id;
-        this.name = name;
-    }
 
     public void setId(long id) {
         this.id = id;

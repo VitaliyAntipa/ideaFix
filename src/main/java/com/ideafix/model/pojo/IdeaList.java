@@ -1,15 +1,15 @@
 package com.ideafix.model.pojo;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "IdeaList")
-public class IdeaList {
+@Table(name = "idealist")
+public class IdeaList implements Serializable{
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue
+    @Column(name = "id",insertable = false, updatable = false)
     private long id;
 
     @Column(name = "name")
@@ -18,17 +18,25 @@ public class IdeaList {
     @Column(name = "is_private")
     private boolean isPrivate;
 
-//    ?
-    private List<Idea> listOfIdeas;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "idealist_idea",
+            joinColumns = @JoinColumn(name = "list_id"),
+            inverseJoinColumns = @JoinColumn(name = "idea_id")
+    )
+    private Set<Idea> setOfIdeas;
 
-//    ?
-    private User author;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private ShortUser author;
 
-    public IdeaList(long id, String name, boolean isPrivate, List<Idea> listOfIdeas) {
+    public IdeaList(long id, String name, boolean isPrivate, Set<Idea> setOfIdeas) {
         this.id = id;
         this.name = name;
         this.isPrivate = isPrivate;
-        this.listOfIdeas = listOfIdeas;
+        this.setOfIdeas = setOfIdeas;
     }
 
     public IdeaList() {
@@ -42,8 +50,8 @@ public class IdeaList {
         return isPrivate;
     }
 
-    public List<Idea> getListOfIdeas() {
-        return listOfIdeas;
+    public Set<Idea> getSetOfIdeas() {
+        return setOfIdeas;
     }
 
     public void setName(String name) {
@@ -54,8 +62,8 @@ public class IdeaList {
         isPrivate = aPrivate;
     }
 
-    public void setListOfIdeas(List<Idea> listOfIdeas) {
-        this.listOfIdeas = listOfIdeas;
+    public void setSetOfIdeas(Set<Idea> setOfIdeas) {
+        this.setOfIdeas = setOfIdeas;
     }
 
     public long getId() {
@@ -64,5 +72,14 @@ public class IdeaList {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+
+    public ShortUser getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(ShortUser author) {
+        this.author = author;
     }
 }

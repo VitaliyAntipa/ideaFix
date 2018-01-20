@@ -1,16 +1,17 @@
 package com.ideafix.model.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-public class Idea {
+@Entity
+@Table(name = "idea")
+public class Idea implements Serializable{
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
     private long id;
 
     @Column(name = "title")
@@ -19,92 +20,37 @@ public class Idea {
     @Column(name = "big_description")
     private String bigDescription;
 
-//    ?
-    private User author;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private ShortUser author;
 
     @Column(name = "date")
+    @Temporal(value = TemporalType.DATE)
     private Date date;
 
     @Column(name = "is_banned")
     private boolean isBanned;
 
-//    ?
-    private List<Tag> listOfTags;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "idea_tag",
+            joinColumns = @JoinColumn(name = "idea_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> setOfTags;
 
-//    ?
-    private List<String> listOfMedia;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idea_id")
+    private List<Media> listOfMedia;
 
-    public Idea(long id, String title, String bigDescription,
-                User author, Date date,
-                boolean isBanned, List<Tag> listOfTags,
-                List<String> listOfMedia) {
-        this.id = id;
-        this.title = title;
-        this.bigDescription = bigDescription;
-        this.author = author;
-        this.date = date;
-        this.isBanned = isBanned;
-        this.listOfTags = listOfTags;
-        this.listOfMedia = listOfMedia;
-    }
+////    @ManyToOne(fetch = FetchType.EAGER)
+////    @JoinTable(name = "Comment",joinColumns ={@JoinColumn(name = "idea_id")})
+//    private List<Comment> listOfComments;
+
 
     public Idea() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBigDescription() {
-        return bigDescription;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    public List<Tag> getListOfTags() {
-        return listOfTags;
-    }
-
-    public List<String> getListOfMedia() {
-        return listOfMedia;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setBigDescription(String bigDescription) {
-        this.bigDescription = bigDescription;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setBanned(boolean banned) {
-        isBanned = banned;
-    }
-
-    public void setListOfTags(List<Tag> listOfTags) {
-        this.listOfTags = listOfTags;
-    }
-
-    public void setListOfMedia(List<String> listOfMedia) {
-        this.listOfMedia = listOfMedia;
     }
 
     public long getId() {
@@ -113,5 +59,61 @@ public class Idea {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBigDescription() {
+        return bigDescription;
+    }
+
+    public void setBigDescription(String bigDescription) {
+        this.bigDescription = bigDescription;
+    }
+
+    public ShortUser getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(ShortUser author) {
+        this.author = author;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
+
+    public Set<Tag> getSetOfTags() {
+        return setOfTags;
+    }
+
+    public void setSetOfTags(Set<Tag> setOfTags) {
+        this.setOfTags = setOfTags;
+    }
+
+    public List<Media> getListOfMedia() {
+        return listOfMedia;
+    }
+
+    public void setListOfMedia(List<Media> listOfMedia) {
+        this.listOfMedia = listOfMedia;
     }
 }

@@ -2,31 +2,22 @@ package com.ideafix.model.pojo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "User")
-public class User implements Serializable {
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue
-    private long id;
-
-    @Column(name = "name")
-    private String name;
+@Table(name = "users")
+public class User extends AbstractUser implements Serializable {
 
     @Column(name = "age")
     private int age;
 
-//    ?
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @Column(name = "email")
     private String email;
-
-    @Column(name = "nick_name")
-    private String nickname;
 
     @Column(name = "city")
     private String city;
@@ -43,43 +34,9 @@ public class User implements Serializable {
     @Column(name = "is_banned")
     private boolean isBanned;
 
-    //    ?
-    private List<IdeaList> ideaLists;
-
-    public User(long id, String name,
-                int age, Role role, String email,
-                String nickname, String city,
-                String country, String about, String pic,
-                boolean isBanned, List<IdeaList> ideaLists) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.role = role;
-        this.email = email;
-        this.nickname = nickname;
-        this.city = city;
-        this.country = country;
-        this.about = about;
-        this.pic = pic;
-        this.isBanned = isBanned;
-        this.ideaLists = ideaLists;
+    public User() {
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getAge() {
         return age;
@@ -105,13 +62,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public String getCity() {
         return city;
@@ -119,6 +69,14 @@ public class User implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getAbout() {
@@ -135,22 +93,6 @@ public class User implements Serializable {
 
     public void setPic(String pic) {
         this.pic = pic;
-    }
-
-    public List<IdeaList> getIdeaLists() {
-        return ideaLists;
-    }
-
-    public void setIdeaLists(List<IdeaList> ideaLists) {
-        this.ideaLists = ideaLists;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public boolean isBanned() {

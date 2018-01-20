@@ -1,14 +1,16 @@
 package com.ideafix.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Tag")
+@Table(name = "tag")
 public class Tag {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @JsonIgnore
     private long id;
 
     @Column(name = "name")
