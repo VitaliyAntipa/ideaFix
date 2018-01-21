@@ -2,19 +2,17 @@ package com.ideafix.model.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "role")
-public class Role implements Serializable {
+@Embeddable public class Role implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator="role_id_seq")
+    @SequenceGenerator(name="role_id_seq", sequenceName="role_id_seq", allocationSize=1)
     @Column(name = "id")
-    @JsonIgnore
     private long id;
 
     @Column(name = "name")
@@ -35,12 +33,19 @@ public class Role implements Serializable {
     public Role() {
     }
 
-
     public void setId(long id) {
         this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

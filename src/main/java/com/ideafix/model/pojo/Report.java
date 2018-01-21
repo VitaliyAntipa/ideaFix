@@ -9,6 +9,8 @@ import java.util.Date;
 public class Report implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="report_id_seq")
+    @SequenceGenerator(name="report_id_seq", sequenceName="report_id_seq", allocationSize=1)
     @Column(name = "id")
     private long id;
 

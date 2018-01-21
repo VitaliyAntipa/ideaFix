@@ -9,6 +9,8 @@ import java.util.Date;
 public class Comment implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="comment_id_seq")
+    @SequenceGenerator(name="comment_id_seq", sequenceName="comment_id_seq", allocationSize=1)
     @Column(name = "id")
     private long id;
 

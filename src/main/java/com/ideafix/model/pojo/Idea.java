@@ -1,10 +1,13 @@
 package com.ideafix.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +16,8 @@ import java.util.Set;
 public class Idea implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "idea_id_seq")
+    @SequenceGenerator(name = "idea_id_seq", sequenceName = "idea_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
@@ -22,7 +27,7 @@ public class Idea implements Serializable {
     @Column(name = "big_description")
     private String bigDescription;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(cascade = {CascadeType.MERGE, CascadeType.PERSIST} , fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private ShortUser author;
 
@@ -33,17 +38,14 @@ public class Idea implements Serializable {
     @Column(name = "is_banned")
     private boolean isBanned;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany//(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "idea_tag",
-            joinColumns = @JoinColumn(name = "idea_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
+            joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private Set<Tag> setOfTags;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany//(cascade = CascadeType.ALL)
     @JoinColumn(name = "idea_id")
     private List<Media> listOfMedia;
 
@@ -53,16 +55,12 @@ public class Idea implements Serializable {
     @Formula("(Select count(*) from likes l where l.idea_id = id)")
     private long countOfLikes;
 
-    public Idea(String title, String bigDescription, ShortUser author,
-                Date date, boolean isBanned, Set<Tag> setOfTags,
-                List<Media> listOfMedia) {
+    public Idea(String title, String bigDescription) {
         this.title = title;
         this.bigDescription = bigDescription;
-        this.author = author;
-        this.date = date;
-        this.isBanned = isBanned;
-        this.setOfTags = setOfTags;
-        this.listOfMedia = listOfMedia;
+        this.date = new Date();
+        this.isBanned = false;
+        this.setOfTags = new HashSet<>();
     }
 
     public Idea() {

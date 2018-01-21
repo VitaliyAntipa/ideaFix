@@ -9,7 +9,9 @@ import java.util.Set;
 public class IdeaList implements Serializable{
 
     @Id
-    @Column(name = "id",insertable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="idealist_id_seq")
+    @SequenceGenerator(name="idealist_id_seq", sequenceName="idealist_id_seq", allocationSize=1)
+    @Column(name = "id")
     private long id;
 
     @Column(name = "name")

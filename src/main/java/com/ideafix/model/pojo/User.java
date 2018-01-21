@@ -2,8 +2,6 @@ package com.ideafix.model.pojo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -12,42 +10,31 @@ public class User extends AbstractUser implements Serializable {
     @Column(name = "age")
     private int age;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
+    @ManyToOne//(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.DETACH})
+    @JoinColumn(name = "role_id", updatable = false)
     private Role role;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 
     @Column(name = "about")
     private String about;
 
-    @Column(name = "picture")
-    private String pic;
-
-    @Column(name = "is_banned")
-    private boolean isBanned;
-
-    public User(String name, String nickname,
-                String pic, boolean isBanned,
-                int age, Role role, String email,
-                String city, String country, String about,
-                String pic1, boolean isBanned1) {
-        super(name, nickname, pic, isBanned);
+    public User(String name, String nickname, String password,
+                String pic, int age, String email,
+                String city, String country, String about) {
+        super(name, nickname, password, pic);
         this.age = age;
-        this.role = role;
         this.email = email;
         this.city = city;
         this.country = country;
         this.about = about;
-        this.pic = pic1;
-        this.isBanned = isBanned1;
     }
 
     public User() {
@@ -101,21 +88,5 @@ public class User extends AbstractUser implements Serializable {
 
     public void setAbout(String about) {
         this.about = about;
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
-
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    public void setBanned(boolean banned) {
-        isBanned = banned;
     }
 }

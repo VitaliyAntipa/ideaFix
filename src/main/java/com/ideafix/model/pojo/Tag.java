@@ -10,11 +10,12 @@ import java.io.Serializable;
 public class Tag implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="tag_id_seq")
+    @SequenceGenerator(name="tag_id_seq", sequenceName="tag_id_seq", allocationSize=1)
     @Column(name = "id")
-    @JsonIgnore
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     private String name;
 
     public Tag(String name) {
