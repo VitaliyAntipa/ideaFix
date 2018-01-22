@@ -24,4 +24,6 @@ public interface UserService {
     void setBan(long id);
 
     void unban(long id);
+
+    void setRole(long userId, Long roleId);
 }

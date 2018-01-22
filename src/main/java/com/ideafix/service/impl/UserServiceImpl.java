@@ -99,4 +99,12 @@ public class UserServiceImpl implements UserService {
     public void unban(long id) {
         userDAO.unbanUser(id);
     }
+
+    @Override
+    public void setRole(long userId, Long roleId) {
+        User user = userDAO.findOne(userId);
+        user.setRole(roleDAO.findOne(roleId));
+
+        userDAO.save(user);
+    }
 }
