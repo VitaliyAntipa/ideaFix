@@ -80,4 +80,14 @@ public class IdeaServiceImpl implements IdeaService {
     public List<Idea> getAll() {
         return ideaDAO.findAll();
     }
+
+    @Override
+    public void setBan(long id) {
+        ideaDAO.setBanToIdea(id);
+    }
+
+    @Override
+    public void unban(long id) {
+        ideaDAO.unbanIdea(id);
+    }
 }

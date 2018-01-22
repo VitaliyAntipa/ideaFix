@@ -20,4 +20,8 @@ public interface IdeaService {
     List<Idea> getIdeasByUserId(long id);
 
     List<Idea> getAll();
+
+    void setBan(long id);
+
+    void unban(long id);
 }
