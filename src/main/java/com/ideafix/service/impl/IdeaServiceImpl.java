@@ -31,7 +31,7 @@ public class IdeaServiceImpl implements IdeaService {
     public Idea createIdea(IdeaDTO newIdea, String nickname) {
         Idea idea = new Idea();
 
-        idea.setSetOfTags(tagService.assignTags(idea.getSetOfTags()));
+        idea.setSetOfTags(tagService.assignTags(newIdea.getSetOfTags()));
         idea.setAuthor(userService.getUserByNickname(nickname));
         idea.setTitle(newIdea.getTitle());
         idea.setBigDescription(newIdea.getBig_description());

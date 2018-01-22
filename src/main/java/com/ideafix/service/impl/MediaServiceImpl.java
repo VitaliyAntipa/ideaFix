@@ -20,18 +20,19 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public List<Media> attachMedia(List<MediaDTO> listOfMedia, Idea idea) {
-        List<Media> medias = new ArrayList<>(listOfMedia.size());
+    public void attachMedia(List<MediaDTO> listOfMedia, Idea idea) {
+        if (listOfMedia.size() > 0) {
+            List<Media> medias = new ArrayList<>(listOfMedia.size());
+            deleteMediaByIdeaId(idea.getId());
 
-        deleteMediaByIdeaId(idea.getId());
+            for (MediaDTO mediaDTO : listOfMedia) {
+                Media tmpMedia = new Media(mediaDTO.getMedia_url());
+                tmpMedia.setIdea(idea);
+                medias.add(mediaDAO.saveAndFlush(tmpMedia));
+            }
 
-        for (MediaDTO mediaDTO : listOfMedia) {
-            Media tmpMedia = new Media(mediaDTO.getMedia_url());
-            tmpMedia.setIdea(idea);
-            medias.add(mediaDAO.saveAndFlush(tmpMedia));
+            mediaDAO.save(medias);
         }
-
-        return medias;
     }
 
     private void deleteMediaByIdeaId(long ideaId) {

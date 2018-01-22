@@ -21,8 +21,8 @@ public class TagServiceImpl implements TagService {
     public Set<Tag> assignTags(Set<Tag> setOfTags) {
         Set<Tag> tags = new HashSet<>();
 
-        if (setOfTags == null) {
-            return new HashSet<>();
+        if (setOfTags.size() == 0) {
+            return tags;
         }
 
         for (Tag tag : setOfTags) {
