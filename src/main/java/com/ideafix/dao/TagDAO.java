@@ -20,6 +20,6 @@ public interface TagDAO extends JpaRepository<Tag, Long> {
 
     @Transactional
     @Modifying
-    @Query("DELETE  FROM tag WHERE id NOT IN (SELECT tag_id from idea_tag)")
+    @Query(nativeQuery = true, value = "DELETE  FROM tag WHERE id NOT IN (SELECT tag_id from idea_tag)")
     public void clearFreeTags();
 }
