@@ -1,9 +1,16 @@
 package com.ideafix.model.dto;
 
 public class IdeaListDTO {
-    private final String name;
+    private String name;
 
     public IdeaListDTO(String name) {
+        this.name = name;
+    }
+
+    public IdeaListDTO() {
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 

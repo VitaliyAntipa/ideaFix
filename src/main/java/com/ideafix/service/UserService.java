@@ -26,4 +26,10 @@ public interface UserService {
     void unban(long id);
 
     void setRole(long userId, Long roleId);
+
+    String authUser(String uniqueUserString, String password);
+
+    Boolean checkCredentialsForRegister(UserDTO userDTO);
+
+    User getUserByEmailOrNickname(String email, String nickname);
 }

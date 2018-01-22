@@ -4,7 +4,12 @@ import com.ideafix.dao.RoleDAO;
 import com.ideafix.dao.UserDAO;
 import com.ideafix.model.dto.UserDTO;
 import com.ideafix.model.pojo.User;
+import com.ideafix.security.JwtAuthenticationProvider;
 import com.ideafix.service.UserService;
+import com.ideafix.service.util.JwtTokenUtil;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +18,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     private RoleDAO roleDAO;
+    private JwtAuthenticationProvider authenticationManager;
+    private JwtTokenUtil jwtTokenUtil;
+    private JwtUserDetailsServiceImpl userDetailsService;
 
-    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
+                           JwtAuthenticationProvider authenticationManager,
+                           JwtTokenUtil jwtTokenUtil,
+                           JwtUserDetailsServiceImpl userDetailsService) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -106,5 +120,31 @@ public class UserServiceImpl implements UserService {
         user.setRole(roleDAO.findOne(roleId));
 
         userDAO.save(user);
+    }
+
+    @Override
+    public String authUser(String uniqueUserString, String password) {
+        final Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                uniqueUserString,
+                                password
+                        )
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return jwtTokenUtil.generateToken(
+                userDetailsService.loadUserByUsername(uniqueUserString));
+    }
+
+    @Override
+    public Boolean checkCredentialsForRegister(UserDTO userDTO) {
+        return userDAO.existsUserByEmailOrNickname(
+                userDTO.getEmail(), userDTO.getNickname());
+    }
+
+    @Override
+    public User getUserByEmailOrNickname(String email, String nickname) {
+        return userDAO.findUserByEmailOrNickname(email, nickname);
     }
 }

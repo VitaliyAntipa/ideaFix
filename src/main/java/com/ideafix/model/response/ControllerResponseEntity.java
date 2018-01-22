@@ -1,22 +1,24 @@
 package com.ideafix.model.response;
 
+import com.ideafix.model.pojo.User;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ControllerResponseEntity {
 
-    public static Map<String, Object> successResponse(Object object) {
+    public static Map<String, Object> successResponse(String objectName, Object object) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", "success");
-        response.put("data", object);
+        response.put(objectName, object);
         return response;
     }
 
-    public static Map<String, Object> successResponse(Iterable<Object> objects) {
+    public static Map<String, Object> successAuthentication(String token, User user) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", "success");
-        response.put("data", objects);
+        response.put("token", token);
+        response.put("user", user);
         return response;
     }
 

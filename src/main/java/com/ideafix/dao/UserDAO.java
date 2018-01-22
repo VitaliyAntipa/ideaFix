@@ -12,18 +12,21 @@ import javax.transaction.Transactional;
 @Repository
 public interface UserDAO extends JpaRepository<User, Long> {
 
-    public User findUsersByNickname(String string);
+    User findUsersByNickname(String string);
 
-    public User findUsersByEmail(String email);
+    User findUsersByEmail(String email);
 
     @Query("update users set is_banned = true where id = :id")
     @Transactional
     @Modifying
-    public void setBanToUser(@Param("id") long id);
+    void setBanToUser(@Param("id") long id);
 
     @Query("update users set is_banned = false where id = :id")
     @Transactional
     @Modifying
-    public void unbanUser(@Param("id") long id);
+    void unbanUser(@Param("id") long id);
 
+    Boolean existsUserByEmailOrNickname(String email, String nickname);
+
+    User findUserByEmailOrNickname(String email, String nickname);
 }

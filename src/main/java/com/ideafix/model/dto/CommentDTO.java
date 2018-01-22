@@ -1,13 +1,28 @@
 package com.ideafix.model.dto;
 
 public class CommentDTO {
-    final private String text;
-    final private long authorId;
-    final private long ideaId;
+    private String text;
+    private long authorId;
+    private long ideaId;
 
     public CommentDTO(String text, long authorId, long ideaId) {
         this.text = text;
         this.authorId = authorId;
+        this.ideaId = ideaId;
+    }
+
+    public CommentDTO() {
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
+    }
+
+    public void setIdeaId(long ideaId) {
         this.ideaId = ideaId;
     }
 

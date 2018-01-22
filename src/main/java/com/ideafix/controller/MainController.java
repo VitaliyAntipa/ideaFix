@@ -141,24 +141,21 @@ public class MainController {
                 new MediaDTO("url2"), new MediaDTO("url23")));
 
 
-        userService.create(user1);
-        userService.create(user2);
-        userService.create(user3);
-        userService.create(user4);
-
-        ideaService.createIdea(idea1, "sys");
-        ideaService.createIdea(idea2, "Poroh");
-        ideaService.createIdea(idea3, "dr.newman");
-        ideaService.createIdea(idea4, "headshot");
-        ideaService.createIdea(idea5, "dr.newman");
-        ideaService.createIdea(idea6, "sys");
-
-        IdeaListDTO ideaListDTO = new IdeaListDTO("My First List");
-        ideaListService.create(ideaListDTO,"sys",1);
-        ideaListService.addIdea(1,3);
-
-
-
+//        userService.create(user1);
+//        userService.create(user2);
+//        userService.create(user3);
+//        userService.create(user4);
+//
+//        ideaService.createIdea(idea1, "sys");
+//        ideaService.createIdea(ixdea2, "Poroh");
+//        ideaService.createIdea(idea3, "dr.newman");
+//        ideaService.createIdea(idea4, "headshot");
+//        ideaService.createIdea(idea5, "dr.newman");
+//        ideaService.createIdea(idea6, "sys");
+//
+//        IdeaListDTO ideaListDTO = new IdeaListDTO("My First List");
+//        ideaListService.create(ideaListDTO,"sys",1);
+//        ideaListService.addIdea(1,3);
     }
 }
 

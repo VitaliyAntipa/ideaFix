@@ -1,19 +1,36 @@
 package com.ideafix.model.security;
 
-public class JwtAuthenticationRequest {
-    final private String username;
-    final private String password;
+import java.io.Serializable;
 
-    public JwtAuthenticationRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+public class JwtAuthenticationRequest implements Serializable {
+    private String nickname;
+    private String email;
+    private String password;
+
+    public JwtAuthenticationRequest() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

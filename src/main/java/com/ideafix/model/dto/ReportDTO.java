@@ -1,13 +1,28 @@
 package com.ideafix.model.dto;
 
 public class ReportDTO {
-    private final String reportText;
-    private final long userId;
-    private final long ideaId;
+    private String reportText;
+    private long userId;
+    private long ideaId;
 
     public ReportDTO(String reportText, long userId, long ideaId) {
         this.reportText = reportText;
         this.userId = userId;
+        this.ideaId = ideaId;
+    }
+
+    public ReportDTO() {
+    }
+
+    public void setReportText(String reportText) {
+        this.reportText = reportText;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void setIdeaId(long ideaId) {
         this.ideaId = ideaId;
     }
 
