@@ -1,30 +1,29 @@
 package com.ideafix.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "idea_media")
 @Table(name = "idea_media")
 public class Media implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="idea_media_id_seq")
-    @SequenceGenerator(name="idea_media_id_seq", sequenceName="idea_media_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idea_media_id_seq")
+    @SequenceGenerator(name = "idea_media_id_seq", sequenceName = "idea_media_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
-
-    @Column(name = "idea_id")
-    private long ideaId;
 
     @Column(name = "media_url")
     private String mediaUrl;
 
-    public Media(long ideaId, String mediaUrl) {
-        this.ideaId = ideaId;
-        this.mediaUrl = mediaUrl;
-    }
+    @ManyToOne
+    @JoinColumn(name = "idea_id")
+    @JsonBackReference
+    private Idea idea;
 
     public Media(String mediaUrl) {
         this.mediaUrl = mediaUrl;
@@ -41,19 +40,19 @@ public class Media implements Serializable {
     public Media() {
     }
 
-    public long getIdeaId() {
-        return ideaId;
-    }
-
-    public void setIdeaId(long ideaId) {
-        this.ideaId = ideaId;
-    }
-
     public String getMediaUrl() {
         return mediaUrl;
     }
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
+    }
+
+    public Idea getIdea() {
+        return idea;
+    }
+
+    public void setIdea(Idea idea) {
+        this.idea = idea;
     }
 }

@@ -1,21 +1,19 @@
 package com.ideafix.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "role")
-@Embeddable public class Role implements Serializable {
+public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator="role_id_seq")
-    @SequenceGenerator(name="role_id_seq", sequenceName="role_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "role_id_seq")
+    @SequenceGenerator(name = "role_id_seq", sequenceName = "role_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     public long getId() {

@@ -1,17 +1,14 @@
 package com.ideafix.model.pojo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Entity
+@Entity(name = "idea")
 @Table(name = "idea")
 public class Idea implements Serializable {
 
@@ -21,32 +18,36 @@ public class Idea implements Serializable {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "big_description")
+    @Column(name = "big_description", nullable = false)
     private String bigDescription;
 
-    @ManyToOne//(cascade = {CascadeType.MERGE, CascadeType.PERSIST} , fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "author_id")
-    private ShortUser author;
+    private User author;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     @Temporal(value = TemporalType.DATE)
     private Date date;
 
     @Column(name = "is_banned")
     private boolean isBanned;
 
-    @ManyToMany//(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany
+    @JoinColumn(name = "idea_id")
+    @JsonBackReference
+    private List<Comment> listOfComments;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "idea_tag",
             joinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private Set<Tag> setOfTags;
 
-    @OneToMany//(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idea_id")
+    @OneToMany(mappedBy = "idea",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Media> listOfMedia;
 
     @Formula("(Select count(*) from comment c where c.idea_id = id)")
@@ -58,9 +59,9 @@ public class Idea implements Serializable {
     public Idea(String title, String bigDescription) {
         this.title = title;
         this.bigDescription = bigDescription;
-        this.date = new Date();
         this.isBanned = false;
         this.setOfTags = new HashSet<>();
+        this.listOfMedia = new ArrayList<>();
     }
 
     public Idea() {
@@ -91,10 +92,10 @@ public class Idea implements Serializable {
     }
 
     public ShortUser getAuthor() {
-        return author;
+        return new ShortUser(author);
     }
 
-    public void setAuthor(ShortUser author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -144,5 +145,29 @@ public class Idea implements Serializable {
 
     public void setCountOfLikes(long countOfLikes) {
         this.countOfLikes = countOfLikes;
+    }
+
+    public List<Comment> getListOfComments() {
+        return listOfComments;
+    }
+
+    public void setListOfComments(List<Comment> listOfComments) {
+        this.listOfComments = listOfComments;
+    }
+
+    @Override
+    public String toString() {
+        return "Idea{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", bigDescription='" + bigDescription + '\'' +
+                ", author=" + author +
+                ", date=" + date +
+                ", isBanned=" + isBanned +
+                ", setOfTags=" + setOfTags +
+                ", listOfMedia=" + listOfMedia +
+                ", countOfComments=" + countOfComments +
+                ", countOfLikes=" + countOfLikes +
+                '}';
     }
 }

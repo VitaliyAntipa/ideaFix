@@ -8,15 +8,15 @@ import javax.persistence.*;
 public class AbstractUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY,generator="users_id_seq")
-    @SequenceGenerator(name="users_id_seq", sequenceName="users_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_id_seq")
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "nick_name", nullable =  false)
+    @Column(name = "nick_name", nullable = false)
     private String nickname;
 
     @Column(name = "password")
@@ -26,7 +26,7 @@ public class AbstractUser {
     @Column(name = "picture")
     private String pic;
 
-    @Column(name = "is_banned", nullable =  false)
+    @Column(name = "is_banned", nullable = false)
     private boolean isBanned;
 
     public AbstractUser() {

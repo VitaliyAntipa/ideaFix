@@ -1,5 +1,9 @@
 package com.ideafix.model.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -9,17 +13,20 @@ import java.util.Date;
 public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="comment_id_seq")
-    @SequenceGenerator(name="comment_id_seq", sequenceName="comment_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_id_seq")
+    @SequenceGenerator(name = "comment_id_seq", sequenceName = "comment_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
-    private ShortUser author;
+    private User author;
 
-    @Column(name = "idea_id")
-    private long ideaId;
+    @ManyToOne
+    @JoinColumn(name = "idea_id")
+    @JsonManagedReference
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Idea idea;
 
     @Column(name = "text")
     private String text;
@@ -28,9 +35,9 @@ public class Comment implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Comment(ShortUser author, long ideaId, String text, Date date) {
+    public Comment(User author, Idea idea, String text, Date date) {
         this.author = author;
-        this.ideaId = ideaId;
+        this.idea = idea;
         this.text = text;
         this.date = date;
     }
@@ -39,19 +46,11 @@ public class Comment implements Serializable {
     }
 
     public ShortUser getAuthor() {
-        return author;
+        return new ShortUser(author);
     }
 
-    public void setAuthor(ShortUser author) {
+    public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public long getIdeaId() {
-        return ideaId;
-    }
-
-    public void setIdeaId(long ideaId) {
-        this.ideaId = ideaId;
     }
 
     public String getText() {
@@ -76,5 +75,13 @@ public class Comment implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Idea getIdea() {
+        return idea;
+    }
+
+    public void setIdea(Idea idea) {
+        this.idea = idea;
     }
 }

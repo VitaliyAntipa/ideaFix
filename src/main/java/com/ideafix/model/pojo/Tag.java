@@ -1,21 +1,19 @@
 package com.ideafix.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "tag")
 @Table(name = "tag")
 public class Tag implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="tag_id_seq")
-    @SequenceGenerator(name="tag_id_seq", sequenceName="tag_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")
+    @SequenceGenerator(name = "tag_id_seq", sequenceName = "tag_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Tag(String name) {

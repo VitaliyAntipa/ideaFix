@@ -2,44 +2,42 @@ package com.ideafix.model.pojo;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "idealist")
-public class IdeaList implements Serializable{
+public class IdeaList implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="idealist_id_seq")
-    @SequenceGenerator(name="idealist_id_seq", sequenceName="idealist_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "idealist_id_seq")
+    @SequenceGenerator(name = "idealist_id_seq",
+            sequenceName = "idealist_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "is_private")
     private boolean isPrivate;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany//(cascade = {CascadeType.ALL})
     @JoinTable(name = "idealist_idea",
             joinColumns = @JoinColumn(name = "list_id"),
             inverseJoinColumns = @JoinColumn(name = "idea_id")
     )
     private Set<Idea> setOfIdeas;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private ShortUser author;
+    private User author;
 
-    public IdeaList(String name, boolean isPrivate,
-                    Set<Idea> setOfIdeas, ShortUser author) {
+    public IdeaList(String name) {
         this.name = name;
-        this.isPrivate = isPrivate;
-        this.setOfIdeas = setOfIdeas;
-        this.author = author;
+        this.isPrivate = false;
+        this.setOfIdeas = new HashSet<>();
     }
 
     public IdeaList() {
@@ -79,10 +77,10 @@ public class IdeaList implements Serializable{
 
 
     public ShortUser getAuthor() {
-        return author;
+        return new ShortUser(author);
     }
 
-    public void setAuthor(ShortUser author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 }

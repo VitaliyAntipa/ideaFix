@@ -9,37 +9,34 @@ import java.util.Date;
 public class Report implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="report_id_seq")
-    @SequenceGenerator(name="report_id_seq", sequenceName="report_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_id_seq")
+    @SequenceGenerator(name = "report_id_seq", sequenceName = "report_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private ShortUser author;
+    private User author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "idea_id")
     private Idea reportedOn;
 
-    @Column(name = "report_text")
+    @Column(name = "report_text", nullable = false)
     private String description;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Report(ShortUser author, Idea reportedOn, String description, Date date) {
-        this.author = author;
-        this.reportedOn = reportedOn;
+    public Report(String description) {
         this.description = description;
-        this.date = date;
     }
 
     public Report() {
     }
 
-    public ShortUser getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
@@ -51,7 +48,7 @@ public class Report implements Serializable {
         return description;
     }
 
-    public void setAuthor(ShortUser author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 

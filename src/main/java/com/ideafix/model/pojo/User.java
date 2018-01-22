@@ -3,14 +3,14 @@ package com.ideafix.model.pojo;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "users")
 @Table(name = "users")
 public class User extends AbstractUser implements Serializable {
 
     @Column(name = "age")
     private int age;
 
-    @ManyToOne//(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", updatable = false)
     private Role role;
 
