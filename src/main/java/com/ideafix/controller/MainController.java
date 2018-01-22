@@ -2,9 +2,11 @@ package com.ideafix.controller;
 
 import com.ideafix.dao.*;
 import com.ideafix.model.dto.IdeaDTO;
+import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.dto.MediaDTO;
 import com.ideafix.model.dto.UserDTO;
 import com.ideafix.model.pojo.*;
+import com.ideafix.service.IdeaListService;
 import com.ideafix.service.IdeaService;
 import com.ideafix.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +27,13 @@ public class MainController {
     private MediaDAO mediaDAO;
     private IdeaService ideaService;
     private UserService userService;
+    private IdeaListService ideaListService;
 
     public MainController(IdeaListDAO ideaListDAO, UserDAO userDAO,
                           CommentDAO commentDAO, ReportDAO reportDAO,
                           IdeaDAO ideaDAO, TagDAO tagDAO, RoleDAO roleDAO,
-                          MediaDAO mediaDAO, IdeaService ideaService, UserService userService) {
+                          MediaDAO mediaDAO, IdeaService ideaService,
+                          UserService userService, IdeaListService ideaListService) {
         this.ideaListDAO = ideaListDAO;
         this.userDAO = userDAO;
         this.commentDAO = commentDAO;
@@ -40,6 +44,7 @@ public class MainController {
         this.mediaDAO = mediaDAO;
         this.ideaService = ideaService;
         this.userService = userService;
+        this.ideaListService = ideaListService;
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.GET)
@@ -147,6 +152,13 @@ public class MainController {
         ideaService.createIdea(idea4, "headshot");
         ideaService.createIdea(idea5, "dr.newman");
         ideaService.createIdea(idea6, "sys");
+
+        IdeaListDTO ideaListDTO = new IdeaListDTO("My First List");
+        ideaListService.create(ideaListDTO,"sys",1);
+        ideaListService.addIdea(1,3);
+
+
+
     }
 }
 

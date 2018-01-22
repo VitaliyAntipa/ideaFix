@@ -35,10 +35,32 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
+    public IdeaList create(IdeaListDTO newIdeaListDTO, String nickname) {
+        IdeaList ideaList = new IdeaList();
+        ideaList.setName(newIdeaListDTO.getName());
+        ideaList.setAuthor(userService.getUserByNickname(nickname));
+
+        return ideaListDAO.saveAndFlush(ideaList);
+    }
+
+    @Override
     public IdeaList create(IdeaListDTO newIdeaListDTO, long userId, long ideaId) {
         IdeaList ideaList = new IdeaList();
         ideaList.setName(newIdeaListDTO.getName());
         ideaList.setAuthor(userService.getUserById(userId));
+
+        Set<Idea> setOfIdeas = new HashSet<>();
+        setOfIdeas.add(ideaService.getIdeaById(ideaId));
+        ideaList.setSetOfIdeas(setOfIdeas);
+
+        return ideaListDAO.saveAndFlush(ideaList);
+    }
+
+    @Override
+    public IdeaList create(IdeaListDTO newIdeaListDTO, String nickname, long ideaId) {
+        IdeaList ideaList = new IdeaList();
+        ideaList.setName(newIdeaListDTO.getName());
+        ideaList.setAuthor(userService.getUserByNickname(nickname));
 
         Set<Idea> setOfIdeas = new HashSet<>();
         setOfIdeas.add(ideaService.getIdeaById(ideaId));
@@ -56,7 +78,7 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
-    public IdeaList addIdeaToIdeaList(long ideaListId, long ideaId) {
+    public IdeaList addIdea(long ideaListId, long ideaId) {
         IdeaList ideaList = ideaListDAO.findOne(ideaListId);
         Set<Idea> ideas = ideaList.getSetOfIdeas();
 
@@ -67,7 +89,7 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
-    public IdeaList deletIdeaFromIdeaList(long ideaListId, long ideaId) {
+    public IdeaList deletIdea(long ideaListId, long ideaId) {
         IdeaList ideaList = ideaListDAO.findOne(ideaListId);
         Set<Idea> ideas = ideaList.getSetOfIdeas();
 

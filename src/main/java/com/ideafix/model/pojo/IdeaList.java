@@ -23,7 +23,7 @@ public class IdeaList implements Serializable {
     @Column(name = "is_private")
     private boolean isPrivate;
 
-    @ManyToMany//(cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "idealist_idea",
             joinColumns = @JoinColumn(name = "list_id"),
             inverseJoinColumns = @JoinColumn(name = "idea_id")

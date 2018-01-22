@@ -7,13 +7,17 @@ public interface IdeaListService {
 
     IdeaList create(IdeaListDTO ideaListDTO, long userId);
 
+    IdeaList create(IdeaListDTO ideaListDTO, String nickname);
+
     IdeaList create(IdeaListDTO ideaListDTO, long userId, long ideaId);
+
+    IdeaList create(IdeaListDTO ideaListDTO, String nickname, long ideaId);
 
     IdeaList edit(IdeaListDTO ideaListDTO, long ideaListId);
 
-    IdeaList addIdeaToIdeaList(long ideaListId, long ideaId);
+    IdeaList addIdea(long ideaListId, long ideaId);
 
-    IdeaList deletIdeaFromIdeaList(long ideaListId, long ideaId);
+    IdeaList deletIdea(long ideaListId, long ideaId);
 
     void delete(long ideaListId);
 }
