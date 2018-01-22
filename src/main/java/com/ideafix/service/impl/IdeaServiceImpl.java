@@ -90,4 +90,9 @@ public class IdeaServiceImpl implements IdeaService {
     public void unban(long id) {
         ideaDAO.unbanIdea(id);
     }
+
+    @Override
+    public void setLike(long ideaId, long userId) {
+
+    }
 }

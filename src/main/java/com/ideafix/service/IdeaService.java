@@ -24,4 +24,6 @@ public interface IdeaService {
     void setBan(long id);
 
     void unban(long id);
+
+    void setLike(long ideaId, long userId);
 }

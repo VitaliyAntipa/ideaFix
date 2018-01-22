@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class MediaServiceImpl implements MediaService {
-
     private MediaDAO mediaDAO;
 
     public MediaServiceImpl(MediaDAO mediaDAO) {
