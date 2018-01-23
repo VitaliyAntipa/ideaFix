@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface IdeaService {
 
-    Idea createIdea(IdeaDTO idea, String authorNickname);
+    Idea createIdea(IdeaDTO idea);
 
     Idea getIdeaById(long id);
 
-    Idea edit(IdeaDTO editIdea, long ideaId);
+    Idea edit(IdeaDTO editIdea);
 
     void delete(long id);
 

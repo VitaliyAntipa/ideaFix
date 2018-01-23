@@ -21,16 +21,16 @@ public class ValidationUtil {
         }
     }
 
-    public static void assertEquals(String newField,
-                                    String originalField, String message) {
+    public static void assertEquals(Object newField,
+                                    Object originalField, String message) {
         if (!newField.equals(originalField)) {
-            throw new IllegalArgumentException(message +" is not equals");
+            throw new IllegalArgumentException(message +" not equals");
         }
     }
 
     public static void assertNotBlank(Object object, String message) {
         if (object == null) {
-            throw new IllegalArgumentException(message + " cannot be empty");
+            throw new IllegalArgumentException(message);
         }
     }
 }

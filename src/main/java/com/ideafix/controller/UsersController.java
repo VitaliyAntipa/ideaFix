@@ -2,84 +2,55 @@ package com.ideafix.controller;
 
 import com.ideafix.exception.ExceptionHandlerController;
 import com.ideafix.exception.RestException;
-import com.ideafix.model.dto.IdeaDTO;
-import com.ideafix.model.pojo.Idea;
+import com.ideafix.model.dto.UserDTO;
+import com.ideafix.model.pojo.User;
 import com.ideafix.model.security.JwtUser;
-import com.ideafix.service.IdeaService;
-import com.ideafix.service.util.JwtTokenUtil;
+import com.ideafix.service.UserService;
 import com.ideafix.service.util.ValidationUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.ideafix.model.response.ControllerResponseEntity.*;
 
 @RestController
-@RequestMapping("/ideas")
-public class IdeaController extends ExceptionHandlerController {
-    private IdeaService ideaService;
+@RequestMapping("/users")
+public class UsersController extends ExceptionHandlerController {
+    private UserService userService;
 
-    public IdeaController(IdeaService ideaService, JwtTokenUtil jwtTokenUtil) {
-        this.ideaService = ideaService;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    @GetMapping("/")
-    public Map<String, Object> findAll() {
-        return successResponse("data", ideaService.getAll());
-    }
-
-    @RequestMapping(value = "/idea", method = RequestMethod.GET)
-    public Map<String, Object> findIdeaById(@RequestParam(value = "id") long id) throws RestException {
-        try {
-            Idea idea = ideaService.getIdeaById(id);
-
-            if (idea == null)
-                return errorResponse("No idea by such id");
-
-            return successResponse("data", idea);
-        } catch (Exception e) {
-            throw new RestException(e.getMessage(), e);
-        }
+    public Map<String, Object> getAll() {
+        return successResponse("data", userService.getAll());
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public Map<String, Object> findIdeaByUserId(
-            @RequestParam(value = "id") long userId) throws RestException {
-        try {
-            List<Idea> ideas = ideaService.getIdeasByUserId(userId);
-
-            if (ideas.size() == 0)
-                return errorResponse("This User has no ideas");
-
-            return successResponse("data", ideas);
-        } catch (Exception e) {
-            throw new RestException(e.getMessage(), e);
-        }
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Map<String, Object> createIdea(@RequestBody IdeaDTO ideaDTO)
+    public Map<String, Object> getUserById(@RequestParam(value = "id", required = false, defaultValue = "0") Long id,
+                                           @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname)
             throws RestException {
         try {
-            JwtUser user = (JwtUser) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
+            User user = new User();
+            if (id > 0) {
+                user = userService.getUserById(id);
+            } else if (nickname != null && !nickname.equals("")) {
+                user = userService.getUserByNickname(nickname);
+            }
 
-            ideaDTO.setAuthorId(user.getId());
-            Idea idea = ideaService.createIdea(ideaDTO);
+            if (user == null)
+                return errorResponse("No user with such id");
 
-            return successResponse("data", idea);
+            return successResponse("data", user);
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public Map<String, Object> editIdea(@RequestBody IdeaDTO ideaDTO)
+    public Map<String, Object> editUser(@RequestBody UserDTO userDTO)
             throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
@@ -87,31 +58,45 @@ public class IdeaController extends ExceptionHandlerController {
                     .getAuthentication()
                     .getPrincipal();
 
-            ValidationUtil.assertEquals(ideaDTO.getAuthorId(),
+            ValidationUtil.assertEquals(userDTO.getUserId(),
                     user.getId(),
-                    "User's and Idea's user's id");
-            Idea idea = ideaService.edit(ideaDTO);
+                    "Current User's and User's for edit ids");
+            User newUser = userService.edit(userDTO);
 
-            return successResponse("data", idea);
+            return successResponse("data", newUser);
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
     }
 
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public Map<String, Object> deleteIdea(@RequestParam(value = "id") long ideaId)
-            throws RestException {
+    public Map<String, Object> delete(@RequestParam(value = "id") long id) throws RestException {
         try {
-            ideaService.delete(ideaId);
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
 
-            return emptyResponse();
+            if (user.getAuthorities()
+                    .iterator()
+                    .next()
+                    .toString()
+                    .equals("ADMIN")
+                    || user.getId() == id) {
+                userService.delete(id);
+                return emptyResponse();
+            }
+
+            return errorResponse("You cannot delete User account " +
+                    "if it's not your or " +
+                    "if you haven't role 'Admin'");
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
     }
 
     @RequestMapping(value = "/ban", method = RequestMethod.GET)
-    public Map<String, Object> ban(@RequestParam(value = "id") long ideaId)
+    public Map<String, Object> ban(@RequestParam(value = "id") long userId)
             throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
@@ -125,7 +110,7 @@ public class IdeaController extends ExceptionHandlerController {
                             .next().toString(),
                     "ADMIN",
                     "Wrong Role!");
-            ideaService.setBan(ideaId);
+            userService.setBan(userId);
 
             return emptyResponse();
 
@@ -141,7 +126,7 @@ public class IdeaController extends ExceptionHandlerController {
 
     @RequestMapping(value = "/unban", method = RequestMethod.GET)
 
-    public Map<String, Object> unban(@RequestParam(value = "id") long ideaId)
+    public Map<String, Object> unban(@RequestParam(value = "id") long userId)
             throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
@@ -155,13 +140,11 @@ public class IdeaController extends ExceptionHandlerController {
                             .next().toString(),
                     "ADMIN",
                     "Wrong Role!");
-            ideaService.unban(ideaId);
+            userService.unban(userId);
 
             return emptyResponse();
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
     }
-
-
 }

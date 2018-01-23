@@ -7,6 +7,7 @@ import com.ideafix.model.pojo.User;
 import com.ideafix.security.JwtAuthenticationProvider;
 import com.ideafix.service.UserService;
 import com.ideafix.service.util.JwtTokenUtil;
+import com.ideafix.service.util.ValidationUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -81,8 +82,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User edit(UserDTO editUser, long id) {
-        User user = userDAO.findOne(id);
+    public User edit(UserDTO editUser) {
+        User user = userDAO.findUserByNickname(
+                editUser.getNickname());
 
         user.setPic(editUser.getPicture());
         user.setAge(editUser.getAge());

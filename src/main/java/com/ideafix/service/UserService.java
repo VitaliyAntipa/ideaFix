@@ -15,7 +15,7 @@ public interface UserService {
 
     void create(UserDTO newUser);
 
-    User edit(UserDTO user, long id);
+    User edit(UserDTO user);
 
     void delete(long userId);
 

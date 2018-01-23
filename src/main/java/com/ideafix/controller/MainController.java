@@ -8,13 +8,10 @@ import com.ideafix.model.pojo.*;
 import com.ideafix.service.IdeaListService;
 import com.ideafix.service.IdeaService;
 import com.ideafix.service.UserService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 
 @RestController

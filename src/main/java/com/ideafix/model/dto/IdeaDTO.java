@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public class IdeaDTO {
+    private long ideaId;
     private String title;
     private String big_description;
     private long authorId;
@@ -16,6 +17,19 @@ public class IdeaDTO {
     public IdeaDTO(String title, String big_description,
                    long authorId, Set<Tag> setOfTags,
                    List<MediaDTO> listOfMedia) {
+        this.title = title;
+        this.big_description = big_description;
+        this.authorId = authorId;
+        this.setOfTags = setOfTags;
+        this.listOfMedia = listOfMedia;
+    }
+
+    public IdeaDTO(long ideaId, String title,
+                   String big_description,
+                   long authorId,
+                   Set<Tag> setOfTags,
+                   List<MediaDTO> listOfMedia) {
+        this.ideaId = ideaId;
         this.title = title;
         this.big_description = big_description;
         this.authorId = authorId;
@@ -73,5 +87,13 @@ public class IdeaDTO {
 
     public List<MediaDTO> getListOfMedia() {
         return listOfMedia;
+    }
+
+    public long getIdeaId() {
+        return ideaId;
+    }
+
+    public void setIdeaId(long ideaId) {
+        this.ideaId = ideaId;
     }
 }

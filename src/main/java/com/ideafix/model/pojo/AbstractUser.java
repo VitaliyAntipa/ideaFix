@@ -32,7 +32,22 @@ public class AbstractUser {
     public AbstractUser() {
     }
 
-    public AbstractUser(String name, String nickname, String password, String pic) {
+    public AbstractUser(long id, String name,
+                        String nickname,
+                        String password,
+                        String pic) {
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
+        this.pic = pic;
+        this.isBanned = false;
+    }
+
+    public AbstractUser(String name,
+                        String nickname,
+                        String password,
+                        String pic) {
         this.name = name;
         this.nickname = nickname;
         this.password = password;

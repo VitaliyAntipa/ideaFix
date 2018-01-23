@@ -1,6 +1,7 @@
 package com.ideafix.model.dto;
 
 public class UserDTO {
+    private long userId;
     private String name;
     private String nickname;
     private String password;
@@ -99,5 +100,13 @@ public class UserDTO {
 
     public String getCountry() {
         return country;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

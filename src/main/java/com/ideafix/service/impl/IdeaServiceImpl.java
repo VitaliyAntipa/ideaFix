@@ -7,6 +7,7 @@ import com.ideafix.service.IdeaService;
 import com.ideafix.service.MediaService;
 import com.ideafix.service.TagService;
 import com.ideafix.service.UserService;
+import com.ideafix.service.util.ValidationUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,11 +29,11 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public Idea createIdea(IdeaDTO newIdea, String nickname) {
+    public Idea createIdea(IdeaDTO newIdea) {
         Idea idea = new Idea();
 
         idea.setSetOfTags(tagService.assignTags(newIdea.getSetOfTags()));
-        idea.setAuthor(userService.getUserByNickname(nickname));
+        idea.setAuthor(userService.getUserById(newIdea.getAuthorId()));
         idea.setTitle(newIdea.getTitle());
         idea.setBigDescription(newIdea.getBig_description());
         idea.setBanned(false);
@@ -52,13 +53,15 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public Idea edit(IdeaDTO editIdea, long ideaId) {
-        Idea idea = ideaDAO.findOne(ideaId);
+    public Idea edit(IdeaDTO editIdea) {
+        Idea idea = ideaDAO.findOne(editIdea.getIdeaId());
+        ValidationUtil.assertNotBlank(idea, "No Idea with such id");
 
         mediaService.attachMedia(editIdea.getListOfMedia(), idea);
         idea.setSetOfTags(tagService.assignTags(idea.getSetOfTags()));
         idea.setTitle(editIdea.getTitle());
         idea.setBigDescription(editIdea.getBig_description());
+        idea.setSetOfTags(tagService.assignTags(editIdea.getSetOfTags()));
 
         idea = ideaDAO.saveAndFlush(idea);
         tagService.clearFreeTags();

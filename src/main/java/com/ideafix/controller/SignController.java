@@ -34,8 +34,8 @@ public class SignController extends ExceptionHandlerController {
             (@RequestBody(required = false) JwtAuthenticationRequest loginUser) throws RestException {
         String token;
         try {
-            ValidationUtil.assertNotBlank(loginUser, "Log In credentials");
-            ValidationUtil.assertNotBlank(loginUser.getPassword(), "Password Filed");
+            ValidationUtil.assertNotBlank(loginUser, "Log In credentials are empty");
+            ValidationUtil.assertNotBlank(loginUser.getPassword(), "Password Filed is empty");
 
             User user = userService.getUserByEmailOrNickname(loginUser.getEmail(), loginUser.getNickname());
             ValidationUtil.assertEquals(loginUser.getPassword(), user.getPassword(), "Password");

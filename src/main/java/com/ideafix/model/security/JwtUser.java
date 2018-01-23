@@ -32,7 +32,7 @@ public class JwtUser implements UserDetails {
 
     public JwtUser(User user) {
         this.id = user.getId();
-        this.username = user.getName();
+        this.username = user.getNickname();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.authorities = (AuthorityUtils.
@@ -90,7 +90,15 @@ public class JwtUser implements UserDetails {
         return email;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    @Override
+    public String toString() {
+        return "JwtUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", authorities=" + authorities +
+                ", enabled=" + enabled +
+                '}';
     }
 }
