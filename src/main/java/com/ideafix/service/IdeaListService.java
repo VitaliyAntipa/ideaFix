@@ -3,21 +3,25 @@ package com.ideafix.service;
 import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.pojo.IdeaList;
 
+import java.util.List;
+
 public interface IdeaListService {
 
-    IdeaList create(IdeaListDTO ideaListDTO, long userId);
+    List<IdeaList> getAll();
 
-    IdeaList create(IdeaListDTO ideaListDTO, String nickname);
+    List<IdeaList> getByUserId(long userId);
 
-    IdeaList create(IdeaListDTO ideaListDTO, long userId, long ideaId);
+    IdeaList getById(long id);
 
-    IdeaList create(IdeaListDTO ideaListDTO, String nickname, long ideaId);
+    IdeaList create(IdeaListDTO ideaListDTO);
 
-    IdeaList edit(IdeaListDTO ideaListDTO, long ideaListId);
+    IdeaList create(IdeaListDTO ideaListDTO, long ideaId);
+
+    IdeaList edit(IdeaListDTO ideaListDTO);
 
     IdeaList addIdea(long ideaListId, long ideaId);
 
-    IdeaList deletIdea(long ideaListId, long ideaId);
+    IdeaList deleteIdea(long ideaListId, long ideaId);
 
     void delete(long ideaListId);
 }

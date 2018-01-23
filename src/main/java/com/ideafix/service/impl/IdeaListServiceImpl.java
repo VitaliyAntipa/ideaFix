@@ -10,6 +10,7 @@ import com.ideafix.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,28 +27,34 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
-    public IdeaList create(IdeaListDTO newIdeaListDTO, long userId) {
+    public List<IdeaList> getAll() {
+        return ideaListDAO.findAll();
+    }
+
+    @Override
+    public List<IdeaList> getByUserId(long userId) {
+        return ideaListDAO.findAllByAuthor_Id(userId);
+    }
+
+    @Override
+    public IdeaList getById(long id) {
+        return ideaListDAO.findOne(id);
+    }
+
+    @Override
+    public IdeaList create(IdeaListDTO newIdeaListDTO) {
         IdeaList ideaList = new IdeaList();
         ideaList.setName(newIdeaListDTO.getName());
-        ideaList.setAuthor(userService.getUserById(userId));
+        ideaList.setAuthor(userService.getUserById(newIdeaListDTO.getAuthorId()));
 
         return ideaListDAO.saveAndFlush(ideaList);
     }
 
     @Override
-    public IdeaList create(IdeaListDTO newIdeaListDTO, String nickname) {
+    public IdeaList create(IdeaListDTO newIdeaListDTO, long ideaId) {
         IdeaList ideaList = new IdeaList();
         ideaList.setName(newIdeaListDTO.getName());
-        ideaList.setAuthor(userService.getUserByNickname(nickname));
-
-        return ideaListDAO.saveAndFlush(ideaList);
-    }
-
-    @Override
-    public IdeaList create(IdeaListDTO newIdeaListDTO, long userId, long ideaId) {
-        IdeaList ideaList = new IdeaList();
-        ideaList.setName(newIdeaListDTO.getName());
-        ideaList.setAuthor(userService.getUserById(userId));
+        ideaList.setAuthor(userService.getUserById(newIdeaListDTO.getAuthorId()));
 
         Set<Idea> setOfIdeas = new HashSet<>();
         setOfIdeas.add(ideaService.getIdeaById(ideaId));
@@ -57,21 +64,8 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
-    public IdeaList create(IdeaListDTO newIdeaListDTO, String nickname, long ideaId) {
-        IdeaList ideaList = new IdeaList();
-        ideaList.setName(newIdeaListDTO.getName());
-        ideaList.setAuthor(userService.getUserByNickname(nickname));
-
-        Set<Idea> setOfIdeas = new HashSet<>();
-        setOfIdeas.add(ideaService.getIdeaById(ideaId));
-        ideaList.setSetOfIdeas(setOfIdeas);
-
-        return ideaListDAO.saveAndFlush(ideaList);
-    }
-
-    @Override
-    public IdeaList edit(IdeaListDTO ideaListDTO, long ideaListId) {
-        IdeaList ideaList = ideaListDAO.findOne(ideaListId);
+    public IdeaList edit(IdeaListDTO ideaListDTO) {
+        IdeaList ideaList = ideaListDAO.findOne(ideaListDTO.getId());
         ideaList.setName(ideaListDTO.getName());
 
         return ideaListDAO.saveAndFlush(ideaList);
@@ -89,7 +83,7 @@ public class IdeaListServiceImpl implements IdeaListService {
     }
 
     @Override
-    public IdeaList deletIdea(long ideaListId, long ideaId) {
+    public IdeaList deleteIdea(long ideaListId, long ideaId) {
         IdeaList ideaList = ideaListDAO.findOne(ideaListId);
         Set<Idea> ideas = ideaList.getSetOfIdeas();
 

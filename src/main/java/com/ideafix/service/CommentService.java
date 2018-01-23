@@ -6,7 +6,7 @@ import com.ideafix.model.pojo.Comment;
 import java.util.List;
 
 public interface CommentService {
-    void createComment(CommentDTO commentDTO);
+    Comment createComment(CommentDTO commentDTO, long authorId);
 
     List<Comment> getAllCommentsByIdeaId(long ideaId);
 
