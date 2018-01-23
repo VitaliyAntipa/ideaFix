@@ -30,10 +30,6 @@ public class JwtTokenUtil {
         return parseToken(token).getSubject();
     }
 
-    public String getRoleFromUser(String token) {
-        return (String) parseToken(token).get("role");
-    }
-
     public String generateToken(JwtUser jwtUser) {
         final Date createdDate = new Date();
 
