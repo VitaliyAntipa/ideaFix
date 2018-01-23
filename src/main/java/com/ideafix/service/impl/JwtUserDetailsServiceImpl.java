@@ -16,6 +16,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public JwtUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new JwtUser(userService.getUserByNickname(username));
+        JwtUser jwtUser = new JwtUser(userService.getUserByNickname(username));
+        if (jwtUser.isEnabled()) {
+            return jwtUser;
+        }
+
+        throw new IllegalArgumentException("This user is blocked");
     }
 }

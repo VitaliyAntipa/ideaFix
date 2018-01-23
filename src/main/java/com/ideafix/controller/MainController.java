@@ -2,17 +2,19 @@ package com.ideafix.controller;
 
 import com.ideafix.dao.*;
 import com.ideafix.model.dto.IdeaDTO;
-import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.dto.MediaDTO;
 import com.ideafix.model.dto.UserDTO;
 import com.ideafix.model.pojo.*;
 import com.ideafix.service.IdeaListService;
 import com.ideafix.service.IdeaService;
 import com.ideafix.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 @RestController

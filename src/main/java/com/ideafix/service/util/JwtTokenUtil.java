@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 import static com.ideafix.constants.SecurityConstants.SECRET;
+import static com.ideafix.constants.SecurityConstants.TOKEN_PREFIX;
 
 
 @Component
@@ -54,5 +55,9 @@ public class JwtTokenUtil {
         JwtUser user = (JwtUser) userDetails;
         final String username = getUsernameFromToken(token);
         return (username.equals(user.getUsername()));
+    }
+
+    public Boolean checkTocken(String requestToken) {
+        return requestToken.startsWith(TOKEN_PREFIX);
     }
 }

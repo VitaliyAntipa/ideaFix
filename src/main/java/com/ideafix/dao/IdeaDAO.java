@@ -15,7 +15,7 @@ import java.util.Set;
 @Repository
 public interface IdeaDAO extends JpaRepository<Idea, Long> {
 
-    public List<Idea> findAllByAuthor_Id(long id);
+    public List<Idea> findAllByAuthorId(long id);
 
     @Query("update idea set is_banned = true where id = :id")
     @Transactional

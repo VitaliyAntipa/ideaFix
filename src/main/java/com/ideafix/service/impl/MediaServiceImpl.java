@@ -25,12 +25,13 @@ public class MediaServiceImpl implements MediaService {
             deleteMediaByIdeaId(idea.getId());
 
             for (MediaDTO mediaDTO : listOfMedia) {
-                Media tmpMedia = new Media(mediaDTO.getMedia_url());
+                Media tmpMedia = new Media(mediaDTO.getMediaUrl());
                 tmpMedia.setIdea(idea);
                 medias.add(mediaDAO.saveAndFlush(tmpMedia));
             }
 
             mediaDAO.save(medias);
+            idea.setListOfMedia(medias);
         }
     }
 

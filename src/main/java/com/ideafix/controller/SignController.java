@@ -7,7 +7,6 @@ import com.ideafix.model.pojo.User;
 import com.ideafix.model.security.JwtAuthenticationRequest;
 import com.ideafix.service.UserService;
 import com.ideafix.service.util.ValidationUtil;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,7 @@ import static com.ideafix.model.response.ControllerResponseEntity.successAuthent
 public class SignController extends ExceptionHandlerController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     private static final Logger LOG =
             Logger.getLogger(SignController.class);
@@ -39,7 +38,7 @@ public class SignController extends ExceptionHandlerController {
             ValidationUtil.assertNotBlank(loginUser.getPassword(), "Password Filed");
 
             User user = userService.getUserByEmailOrNickname(loginUser.getEmail(), loginUser.getNickname());
-            ValidationUtil.assertPasswordsEqualls(loginUser.getPassword(), user.getPassword());
+            ValidationUtil.assertEquals(loginUser.getPassword(), user.getPassword(), "Password");
             if (loginUser.getNickname() == null) {
                 token = userService.authUser(user.getNickname(), loginUser.getPassword());
             } else {

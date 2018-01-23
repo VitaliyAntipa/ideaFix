@@ -39,6 +39,7 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setDate(new Date());
 
         idea = ideaDAO.saveAndFlush(idea);
+
         mediaService.attachMedia(newIdea.getListOfMedia(), idea);
         tagService.clearFreeTags();
 
@@ -73,7 +74,7 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public List<Idea> getIdeasByUserId(long id) {
-        return ideaDAO.findAllByAuthor_Id(id);
+        return ideaDAO.findAllByAuthorId(id);
     }
 
     @Override

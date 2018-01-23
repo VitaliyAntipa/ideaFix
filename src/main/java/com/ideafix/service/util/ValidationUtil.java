@@ -21,10 +21,10 @@ public class ValidationUtil {
         }
     }
 
-    public static void assertPasswordsEqualls(String loginUserPassword,
-                                             String originalPassword) {
-        if (!loginUserPassword.equals(originalPassword)) {
-            throw new IllegalArgumentException("Wrong password!");
+    public static void assertEquals(String newField,
+                                    String originalField, String message) {
+        if (!newField.equals(originalField)) {
+            throw new IllegalArgumentException(message +" is not equals");
         }
     }
 

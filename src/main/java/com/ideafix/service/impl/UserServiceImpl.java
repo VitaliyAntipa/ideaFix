@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByNickname(String username) {
-        return userDAO.findUsersByNickname(username);
+        return userDAO.findUserByNickname(username);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userDAO.findUsersByEmail(email);
+        return userDAO.findUserByEmail(email);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void create(UserDTO newUser) {
 
-        if (userDAO.findUsersByNickname(newUser.getNickname()) != null
-                || userDAO.findUsersByEmail(newUser.getEmail()) != null) {
+        if (userDAO.findUserByNickname(newUser.getNickname()) != null
+                || userDAO.findUserByEmail(newUser.getEmail()) != null) {
             throw new IllegalArgumentException("There is user with such nickname or email.");
         }
 
