@@ -14,14 +14,6 @@ public class ControllerResponseEntity {
         return response;
     }
 
-    public static Map<String, Object> successAuthentication(String token, User user) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("result", "success");
-        response.put("token", token);
-        response.put("user", user);
-        return response;
-    }
-
     public static Map<String, Object> emptyResponse() {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("result", "success");

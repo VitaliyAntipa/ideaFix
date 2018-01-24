@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import static com.ideafix.model.response.ControllerResponseEntity.emptyResponse;
-import static com.ideafix.model.response.ControllerResponseEntity.errorResponse;
-import static com.ideafix.model.response.ControllerResponseEntity.successAuthentication;
+import static com.ideafix.model.response.ControllerResponseEntity.*;
 
 @RestController
 public class SignController extends ExceptionHandlerController {
@@ -45,7 +43,7 @@ public class SignController extends ExceptionHandlerController {
                 token = userService.authUser(loginUser.getNickname(), loginUser.getPassword());
             }
 
-            return successAuthentication(token, user);
+            return successResponse("token", token);
         } catch (Exception e) {
             LOG.trace(e.getMessage(), e);
             throw new RestException(e.getMessage(), e);
