@@ -21,9 +21,7 @@ public interface UserService {
 
     List<User> getAll();
 
-    void setBan(long id);
-
-    void unban(long id);
+    void setBan(long id, boolean ban);
 
     void setRole(long userId, Long roleId);
 

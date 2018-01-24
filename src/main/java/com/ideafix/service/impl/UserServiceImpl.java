@@ -107,13 +107,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setBan(long id) {
-        userDAO.setBanToUser(id);
-    }
-
-    @Override
-    public void unban(long id) {
-        userDAO.unbanUser(id);
+    public void setBan(long id, boolean ban) {
+        if (ban) {
+            userDAO.setBanToUser(id);
+        } else {
+            userDAO.unbanUser(id);
+        }
     }
 
     @Override

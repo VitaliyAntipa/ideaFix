@@ -58,7 +58,6 @@ public class IdeaServiceImpl implements IdeaService {
         ValidationUtil.assertNotBlank(idea, "No Idea with such id");
 
         mediaService.attachMedia(editIdea.getListOfMedia(), idea);
-        idea.setSetOfTags(tagService.assignTags(idea.getSetOfTags()));
         idea.setTitle(editIdea.getTitle());
         idea.setBigDescription(editIdea.getBig_description());
         idea.setSetOfTags(tagService.assignTags(editIdea.getSetOfTags()));
@@ -86,13 +85,12 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public void setBan(long id) {
-        ideaDAO.setBanToIdea(id);
-    }
-
-    @Override
-    public void unban(long id) {
-        ideaDAO.unbanIdea(id);
+    public void setBan(long id, boolean ban) {
+        if (ban) {
+            ideaDAO.setBanToIdea(id);
+        } else {
+            ideaDAO.unbanIdea(id);
+        }
     }
 
     @Override

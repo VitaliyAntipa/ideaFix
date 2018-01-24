@@ -1,5 +1,6 @@
 package com.ideafix.controller;
 
+import com.ideafix.exception.ExceptionHandlerController;
 import com.ideafix.exception.RestException;
 import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.pojo.IdeaList;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static com.ideafix.model.response.ControllerResponseEntity.*;
+import static com.ideafix.model.response.ControllerResponseEntity.emptyResponse;
+import static com.ideafix.model.response.ControllerResponseEntity.successResponse;
 
 @RestController
 @RequestMapping("/lists")
-public class IdeaListController {
+public class IdeaListController extends ExceptionHandlerController {
     private IdeaListService ideaListService;
 
     public IdeaListController(IdeaListService ideaListService) {
@@ -33,17 +35,30 @@ public class IdeaListController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Map<String, Object> getAll(@RequestParam(value = "id") long id) {
+    public Map<String, Object> getById(@RequestParam(value = "id") long id) {
         return successResponse("data", ideaListService.getById(id));
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public Map<String, Object> addIdeaToList(@RequestParam(value = "list") long listId,
+                                             @RequestParam(value = "idea") long ideaId)
+            throws RestException {
+        try {
+            return successResponse("data", ideaListService.addIdea(listId, ideaId));
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Map<String, Object> create(@RequestBody IdeaListDTO ideaListDTO) throws RestException {
+    public Map<String, Object> create(@RequestBody IdeaListDTO ideaListDTO)
+            throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
+
             ideaListDTO.setAuthorId(user.getId());
             IdeaList ideaList = ideaListService.create(ideaListDTO);
 
@@ -53,8 +68,28 @@ public class IdeaListController {
         }
     }
 
+    @RequestMapping(value = "/idea", method = RequestMethod.POST)
+    public Map<String, Object> createWithIdea(@RequestBody IdeaListDTO ideaListDTO,
+                                              @RequestParam(value = "id") long id)
+            throws RestException {
+        try {
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            ideaListDTO.setAuthorId(user.getId());
+            IdeaList ideaList = ideaListService.create(ideaListDTO, id);
+
+            return successResponse("data", ideaList);
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public Map<String, Object> edit(@RequestBody IdeaListDTO ideaListDTO) throws RestException {
+    public Map<String, Object> edit(@RequestBody IdeaListDTO ideaListDTO)
+            throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
                     .getContext()
@@ -67,6 +102,17 @@ public class IdeaListController {
             IdeaList ideaList = ideaListService.edit(ideaListDTO);
 
             return successResponse("data", ideaList);
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.DELETE)
+    public Map<String, Object> deleteIdeaFromList(@RequestParam(value = "list") long listId,
+                                                  @RequestParam(value = "idea") long ideaId)
+            throws RestException {
+        try {
+            return successResponse("data", ideaListService.deleteIdea(listId, ideaId));
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }

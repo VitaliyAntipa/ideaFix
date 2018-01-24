@@ -21,9 +21,7 @@ public interface IdeaService {
 
     List<Idea> getAll();
 
-    void setBan(long id);
-
-    void unban(long id);
+    void setBan(long id, boolean ban);
 
     void setLike(long ideaId, long userId);
 }

@@ -8,6 +8,8 @@ import com.ideafix.service.ReportService;
 import com.ideafix.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReportServiceImpl implements ReportService {
     private ReportDAO reportDAO;
@@ -21,11 +23,16 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public List<Report> getAll() {
+        return reportDAO.findAll();
+    }
+
+    @Override
     public Report create(ReportDTO newReport) {
         Report report = new Report();
 
         report.setDescription(newReport.getReportText());
-        report.setAuthor(userService.getUserById(newReport.getUserId()));
+        report.setAuthor(userService.getUserById(newReport.getAuthorId()));
         report.setReportedOn(ideaService.getIdeaById(newReport.getIdeaId()));
 
         return reportDAO.saveAndFlush(report);

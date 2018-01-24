@@ -2,12 +2,11 @@ package com.ideafix.model.dto;
 
 public class ReportDTO {
     private String reportText;
-    private long userId;
+    private long authorId;
     private long ideaId;
 
-    public ReportDTO(String reportText, long userId, long ideaId) {
+    public ReportDTO(String reportText, long ideaId) {
         this.reportText = reportText;
-        this.userId = userId;
         this.ideaId = ideaId;
     }
 
@@ -18,8 +17,8 @@ public class ReportDTO {
         this.reportText = reportText;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
     }
 
     public void setIdeaId(long ideaId) {
@@ -30,8 +29,8 @@ public class ReportDTO {
         return reportText;
     }
 
-    public long getUserId() {
-        return userId;
+    public long getAuthorId() {
+        return authorId;
     }
 
     public long getIdeaId() {

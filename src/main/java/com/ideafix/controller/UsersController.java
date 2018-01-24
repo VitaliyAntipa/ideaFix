@@ -29,8 +29,8 @@ public class UsersController extends ExceptionHandlerController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public Map<String, Object> getUserById(@RequestParam(value = "id", required = false, defaultValue = "0") Long id,
-                                           @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname)
+    public Map<String, Object> getUserByCredentials(@RequestParam(value = "id", required = false, defaultValue = "0") Long id,
+                                                    @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname)
             throws RestException {
         try {
             User user = new User();
@@ -96,7 +96,8 @@ public class UsersController extends ExceptionHandlerController {
     }
 
     @RequestMapping(value = "/ban", method = RequestMethod.GET)
-    public Map<String, Object> ban(@RequestParam(value = "id") long userId)
+    public Map<String, Object> banUser(@RequestParam(value = "id") long userId,
+                                       @RequestParam(value = "ban") boolean shouldBan)
             throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
@@ -110,37 +111,8 @@ public class UsersController extends ExceptionHandlerController {
                             .next().toString(),
                     "ADMIN",
                     "Wrong Role!");
-            userService.setBan(userId);
 
-            return emptyResponse();
-
-        } catch (
-                Exception e)
-
-        {
-            throw new RestException(e.getMessage(), e);
-        }
-
-
-    }
-
-    @RequestMapping(value = "/unban", method = RequestMethod.GET)
-
-    public Map<String, Object> unban(@RequestParam(value = "id") long userId)
-            throws RestException {
-        try {
-            JwtUser user = (JwtUser) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-
-            ValidationUtil.assertEquals(user
-                            .getAuthorities()
-                            .iterator()
-                            .next().toString(),
-                    "ADMIN",
-                    "Wrong Role!");
-            userService.unban(userId);
+            userService.setBan(userId, shouldBan);
 
             return emptyResponse();
         } catch (Exception e) {

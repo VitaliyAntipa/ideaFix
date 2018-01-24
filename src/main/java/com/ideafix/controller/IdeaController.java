@@ -111,7 +111,8 @@ public class IdeaController extends ExceptionHandlerController {
     }
 
     @RequestMapping(value = "/ban", method = RequestMethod.GET)
-    public Map<String, Object> ban(@RequestParam(value = "id") long ideaId)
+    public Map<String, Object> banIdea(@RequestParam(value = "id") long ideaId,
+                                       @RequestParam(value = "ban") boolean shouldBan)
             throws RestException {
         try {
             JwtUser user = (JwtUser) SecurityContextHolder
@@ -125,43 +126,15 @@ public class IdeaController extends ExceptionHandlerController {
                             .next().toString(),
                     "ADMIN",
                     "Wrong Role!");
-            ideaService.setBan(ideaId);
 
-            return emptyResponse();
-
-        } catch (
-                Exception e)
-
-        {
-            throw new RestException(e.getMessage(), e);
-        }
-
-
-    }
-
-    @RequestMapping(value = "/unban", method = RequestMethod.GET)
-
-    public Map<String, Object> unban(@RequestParam(value = "id") long ideaId)
-            throws RestException {
-        try {
-            JwtUser user = (JwtUser) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-
-            ValidationUtil.assertEquals(user
-                            .getAuthorities()
-                            .iterator()
-                            .next().toString(),
-                    "ADMIN",
-                    "Wrong Role!");
-            ideaService.unban(ideaId);
+            ideaService.setBan(ideaId, shouldBan);
 
             return emptyResponse();
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
-    }
 
+
+    }
 
 }
