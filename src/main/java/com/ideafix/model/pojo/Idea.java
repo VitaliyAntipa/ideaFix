@@ -25,6 +25,7 @@ public class Idea implements Serializable {
     private String bigDescription;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
     @JoinColumn(name = "author_id")
     private User author;
 

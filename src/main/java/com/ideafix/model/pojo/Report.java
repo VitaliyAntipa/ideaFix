@@ -14,8 +14,8 @@ public class Report implements Serializable {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
@@ -36,8 +36,8 @@ public class Report implements Serializable {
     public Report() {
     }
 
-    public User getAuthor() {
-        return author;
+    public ShortUser getAuthor() {
+        return new ShortUser(author);
     }
 
     public Idea getReportedOn() {

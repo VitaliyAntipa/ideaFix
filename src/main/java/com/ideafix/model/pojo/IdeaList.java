@@ -31,7 +31,7 @@ public class IdeaList implements Serializable {
     private Set<Idea> setOfIdeas;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author_id")
     private User author;
 
     public IdeaList(String name) {

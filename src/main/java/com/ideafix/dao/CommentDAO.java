@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommentDAO extends JpaRepository<Comment, Long> {
-
     List<Comment> findAllByIdea_Id(long ideaId);
 }

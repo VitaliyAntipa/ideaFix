@@ -2,6 +2,7 @@ package com.ideafix.controller;
 
 import com.ideafix.dao.*;
 import com.ideafix.model.dto.IdeaDTO;
+import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.dto.MediaDTO;
 import com.ideafix.model.dto.UserDTO;
 import com.ideafix.model.pojo.*;
@@ -140,21 +141,31 @@ public class MainController {
                 new MediaDTO("url2"), new MediaDTO("url23")));
 
 
-//        userService.create(user1);
-//        userService.create(user2);
-//        userService.create(user3);
-//        userService.create(user4);
-//
-//        ideaService.createIdea(idea1, "sys");
-//        ideaService.createIdea(ixdea2, "Poroh");
-//        ideaService.createIdea(idea3, "dr.newman");
-//        ideaService.createIdea(idea4, "headshot");
-//        ideaService.createIdea(idea5, "dr.newman");
-//        ideaService.createIdea(idea6, "sys");
-//
-//        IdeaListDTO ideaListDTO = new IdeaListDTO("My First List");
-//        ideaListService.create(ideaListDTO,"sys",1);
-//        ideaListService.addIdea(1,3);
+        userService.create(user1);
+        userService.create(user2);
+        userService.create(user3);
+        userService.create(user4);
+
+        idea1.setAuthorId(1);
+        idea2.setAuthorId(2);
+        idea3.setAuthorId(3);
+        idea4.setAuthorId(4);
+        idea5.setAuthorId(1);
+        idea6.setAuthorId(2);
+
+        ideaService.createIdea(idea1);
+        ideaService.createIdea(idea2);
+        ideaService.createIdea(idea3);
+        ideaService.createIdea(idea4);
+        ideaService.createIdea(idea5);
+        ideaService.createIdea(idea6);
+
+        IdeaListDTO ideaListDTO = new IdeaListDTO("My First List");
+        ideaListDTO.setAuthorId(1);
+        ideaListService.create(ideaListDTO,1);
+        ideaListService.addIdea(1,3);
+
+//        userService.delete(1);
     }
 }
 

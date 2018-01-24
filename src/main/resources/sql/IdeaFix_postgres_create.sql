@@ -59,7 +59,7 @@ CREATE TABLE "users" (
 	"name" varchar(100) NOT NULL,
 	"nick_name" varchar(30) NOT NULL UNIQUE,
 	"password" varchar(60) NOT NULL,
-	"role_id" int NOT NULL,
+	"role_id" bigint NOT NULL,
 	"age" int ,
 	"email" varchar(30) NOT NULL UNIQUE,
 	"about" varchar(500),
@@ -77,7 +77,7 @@ CREATE TABLE "users" (
 CREATE TABLE "idealist" (
 	"id" bigserial NOT NULL,
 	"name" varchar(30) NOT NULL,
-	"user_id" int NOT NULL,
+	"author_id" bigint NOT NULL,
 	"is_private" BOOLEAN NOT NULL,
 	CONSTRAINT idealist_pk PRIMARY KEY ("id")
 ) WITH (
@@ -144,7 +144,7 @@ CREATE TABLE "comment" (
 CREATE TABLE "report" (
 	"id" bigserial NOT NULL,
 	"idea_id" bigint NOT NULL,
-	"user_id" bigint NOT NULL,
+	"author_id" bigint NOT NULL,
 	"report_text" varchar(280) NOT NULL,
 	"date" DATE NOT NULL,
 	CONSTRAINT report_pk PRIMARY KEY ("id")
@@ -186,27 +186,27 @@ CREATE TABLE "role" (
 
 ALTER TABLE "users" ADD CONSTRAINT "users_fk0" FOREIGN KEY ("role_id") REFERENCES "role"("id");
 
-ALTER TABLE "idealist" ADD CONSTRAINT "idealist_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "idealist" ADD CONSTRAINT "idealist_fk0" FOREIGN KEY ("author_id") REFERENCES "users"("id")ON DELETE CASCADE;
 
-ALTER TABLE "idea" ADD CONSTRAINT "idea_fk0" FOREIGN KEY ("author_id") REFERENCES "users"("id");
+ALTER TABLE "idea" ADD CONSTRAINT "idea_fk0" FOREIGN KEY ("author_id") REFERENCES "users"("id")ON DELETE CASCADE;
 
-ALTER TABLE "idealist_idea" ADD CONSTRAINT "idealist_idea_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
-ALTER TABLE "idealist_idea" ADD CONSTRAINT "idealist_idea_fk1" FOREIGN KEY ("list_id") REFERENCES "idealist"("id");
+ALTER TABLE "idealist_idea" ADD CONSTRAINT "idealist_idea_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
+ALTER TABLE "idealist_idea" ADD CONSTRAINT "idealist_idea_fk1" FOREIGN KEY ("list_id") REFERENCES "idealist"("id")ON DELETE CASCADE;
 
 
-ALTER TABLE "idea_tag" ADD CONSTRAINT "idea_tag_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
-ALTER TABLE "idea_tag" ADD CONSTRAINT "idea_tag_fk1" FOREIGN KEY ("tag_id") REFERENCES "tag"("id");
+ALTER TABLE "idea_tag" ADD CONSTRAINT "idea_tag_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
+ALTER TABLE "idea_tag" ADD CONSTRAINT "idea_tag_fk1" FOREIGN KEY ("tag_id") REFERENCES "tag"("id")ON DELETE CASCADE;
 
-ALTER TABLE "comment" ADD CONSTRAINT "comment_fk0" FOREIGN KEY ("author_id") REFERENCES "users"("id");
-ALTER TABLE "comment" ADD CONSTRAINT "comment_fk1" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
+ALTER TABLE "comment" ADD CONSTRAINT "comment_fk0" FOREIGN KEY ("author_id") REFERENCES "users"("id")ON DELETE CASCADE;
+ALTER TABLE "comment" ADD CONSTRAINT "comment_fk1" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
 
-ALTER TABLE "report" ADD CONSTRAINT "report_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
-ALTER TABLE "report" ADD CONSTRAINT "report_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "report" ADD CONSTRAINT "report_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
+ALTER TABLE "report" ADD CONSTRAINT "report_fk1" FOREIGN KEY ("author_id") REFERENCES "users"("id")ON DELETE CASCADE;
 
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
 
-ALTER TABLE "idea_media" ADD CONSTRAINT "idea_media_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
+ALTER TABLE "idea_media" ADD CONSTRAINT "idea_media_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
 
 -- Base values
 
