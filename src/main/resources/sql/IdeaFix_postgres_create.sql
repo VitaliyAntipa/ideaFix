@@ -22,11 +22,13 @@ ALTER TABLE IF EXISTS "report" DROP CONSTRAINT IF EXISTS "report_fk0";
 
 ALTER TABLE IF EXISTS "report" DROP CONSTRAINT IF EXISTS "report_fk1";
 
-ALTER TABLE IF EXISTS "likes" DROP CONSTRAINT IF EXISTS "likes_fk0";
-
-ALTER TABLE IF EXISTS "likes" DROP CONSTRAINT IF EXISTS "likes_fk1";
-
 ALTER TABLE IF EXISTS "idea_media" DROP CONSTRAINT IF EXISTS "idea_media_fk0";
+
+ALTER TABLE IF EXISTS "user_idea" DROP CONSTRAINT IF EXISTS "user_idea_fk0";
+
+ALTER TABLE IF EXISTS "user_idea" DROP CONSTRAINT IF EXISTS "user_idea_fk1";
+
+DROP TABLE IF EXISTS "user_idea";
 
 DROP TABLE IF EXISTS "users" cascade;
 
@@ -43,8 +45,6 @@ DROP TABLE IF EXISTS "idea_tag" cascade;
 DROP TABLE IF EXISTS "comment" cascade;
 
 DROP TABLE IF EXISTS "report" cascade;
-
-DROP TABLE IF EXISTS "likes" cascade;
 
 DROP TABLE IF EXISTS "idea_media" cascade;
 
@@ -93,6 +93,7 @@ CREATE TABLE "idea" (
 	"author_id" bigint NOT NULL,
 	"date" DATE NOT NULL,
 	"is_banned" bool NOT NULL,
+	"views" BIGINT,
 	CONSTRAINT idea_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -152,17 +153,6 @@ CREATE TABLE "report" (
   OIDS=FALSE
 );
 
-
-
-CREATE TABLE "likes" (
-	"user_id" bigint NOT NULL,
-	"idea_id" bigint NOT NULL
-) WITH (
-  OIDS=FALSE
-);
-
-
-
 CREATE TABLE "idea_media" (
 	"id" bigserial NOT NULL,
 	"idea_id" bigint NOT NULL,
@@ -180,6 +170,15 @@ CREATE TABLE "role" (
 	CONSTRAINT role_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
+);
+
+CREATE TABLE "user_idea" (
+	"id" serial NOT NULL,
+	"user_id" bigint NOT NULL,
+	"idea_id" bigint NOT NULL,
+	CONSTRAINT user_idea_pk PRIMARY KEY ("id")
+) WITH (
+OIDS=FALSE
 );
 
 
@@ -203,21 +202,13 @@ ALTER TABLE "comment" ADD CONSTRAINT "comment_fk1" FOREIGN KEY ("idea_id") REFER
 ALTER TABLE "report" ADD CONSTRAINT "report_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
 ALTER TABLE "report" ADD CONSTRAINT "report_fk1" FOREIGN KEY ("author_id") REFERENCES "users"("id")ON DELETE CASCADE;
 
-ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
-ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("idea_id") REFERENCES "idea"("id");
-
 ALTER TABLE "idea_media" ADD CONSTRAINT "idea_media_fk0" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
+
+ALTER TABLE "user_idea" ADD CONSTRAINT "user_idea_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id")ON DELETE CASCADE;
+ALTER TABLE "user_idea" ADD CONSTRAINT "user_idea_fk1" FOREIGN KEY ("idea_id") REFERENCES "idea"("id")ON DELETE CASCADE;
+
 
 -- Base values
 
 INSERT INTO role (id, name) VALUEs (1,'USER');
 INSERT INTO role (id, name) VALUEs (2,'ADMIN');
-
-
-
-
-
-
-
-
-

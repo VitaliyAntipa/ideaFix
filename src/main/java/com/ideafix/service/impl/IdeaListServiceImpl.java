@@ -98,6 +98,15 @@ public class IdeaListServiceImpl implements IdeaListService {
         return ideaListDAO.saveAndFlush(ideaList);
     }
 
+    @Override
+    public void setIdeaListPrivate(long ideaList, long userId, boolean isPrivate) {
+        if(ideaListDAO.findOne(ideaList).getAuthor().getId() == userId){
+            ideaListDAO.setListPrivate(ideaList,isPrivate);
+        }
+
+        throw  new IllegalArgumentException("You can make private only yours List");
+    }
+
 
     @Override
     public void delete(long ideaListId) {

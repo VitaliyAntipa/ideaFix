@@ -6,7 +6,6 @@ import com.ideafix.model.dto.IdeaDTO;
 import com.ideafix.model.pojo.Idea;
 import com.ideafix.model.security.JwtUser;
 import com.ideafix.service.IdeaService;
-import com.ideafix.service.util.JwtTokenUtil;
 import com.ideafix.service.util.ValidationUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ import static com.ideafix.model.response.ControllerResponseEntity.*;
 public class IdeaController extends ExceptionHandlerController {
     private IdeaService ideaService;
 
-    public IdeaController(IdeaService ideaService, JwtTokenUtil jwtTokenUtil) {
+    public IdeaController(IdeaService ideaService) {
         this.ideaService = ideaService;
     }
 
@@ -39,6 +38,7 @@ public class IdeaController extends ExceptionHandlerController {
             if (idea == null)
                 return errorResponse("No idea by such id");
 
+            ideaService.incrementViews(id);
             return successResponse("data", idea);
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
@@ -133,8 +133,39 @@ public class IdeaController extends ExceptionHandlerController {
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
-
-
     }
 
+    @RequestMapping(value = "/favorite", method = RequestMethod.GET)
+    public Map<String, Object> addIdeaToFavorite(
+            @RequestParam(value = "id") long ideaId) throws RestException {
+        try {
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            ideaService.addIdeaToFavorite(ideaId, user.getId());
+            List<Integer> usersFavoriteIdeasId
+                    = ideaService.getUsersFavoriteIdeasId(user.getId());
+            return successResponse("data", usersFavoriteIdeasId);
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/favorites", method = RequestMethod.GET)
+    public Map<String, Object> addIdeaToFavorite() throws RestException {
+        try {
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            List<Integer> usersFavoriteIdeasId =
+                    ideaService.getUsersFavoriteIdeasId(user.getId());
+            return successResponse("data", usersFavoriteIdeasId);
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
 }

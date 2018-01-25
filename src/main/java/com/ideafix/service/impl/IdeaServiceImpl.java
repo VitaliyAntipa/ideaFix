@@ -94,7 +94,21 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public void setLike(long ideaId, long userId) {
+    public void addIdeaToFavorite(long ideaId, long userId) {
+        if (!ideaDAO.existsIdeaInUsersFavorite(ideaId, userId)) {
+            ideaDAO.addIdeaToFavorite(ideaId, userId);
+        } else {
+            ideaDAO.deleteIdeaFromFavorite(ideaId, userId);
+        }
+    }
 
+    @Override
+    public List<Integer> getUsersFavoriteIdeasId(long userId) {
+        return ideaDAO.getAllFavoriteIdeasByUserId(userId);
+    }
+
+    @Override
+    public void incrementViews(long ideaId) {
+        ideaDAO.incrementViews(ideaId);
     }
 }

@@ -50,6 +50,7 @@ public class IdeaListController extends ExceptionHandlerController {
         }
     }
 
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public Map<String, Object> create(@RequestBody IdeaListDTO ideaListDTO)
             throws RestException {
@@ -107,7 +108,7 @@ public class IdeaListController extends ExceptionHandlerController {
         }
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public Map<String, Object> deleteIdeaFromList(@RequestParam(value = "list") long listId,
                                                   @RequestParam(value = "idea") long ideaId)
             throws RestException {
@@ -123,6 +124,23 @@ public class IdeaListController extends ExceptionHandlerController {
         try {
             ideaListService.delete(id);
 
+            return emptyResponse();
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/private", method = RequestMethod.GET)
+    public Map<String, Object> makeIdeaPrivate(@RequestParam(value = "list") long listId,
+                                             @RequestParam(value = "condition") boolean condition)
+            throws RestException {
+        try {
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            ideaListService.setIdeaListPrivate(listId, user.getId(), condition);
             return emptyResponse();
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);

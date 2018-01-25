@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "ideaList")
 @Table(name = "idealist")
 public class IdeaList implements Serializable {
 

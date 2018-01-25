@@ -15,17 +15,38 @@ import java.util.Set;
 @Repository
 public interface IdeaDAO extends JpaRepository<Idea, Long> {
 
-    public List<Idea> findAllByAuthorId(long id);
+    List<Idea> findAllByAuthorId(long id);
 
     @Query("update idea set is_banned = true where id = :id")
     @Transactional
     @Modifying
-    public void setBanToIdea(long id);
+    void setBanToIdea(long id);
 
     @Query("update idea set is_banned = false where id = :id")
     @Transactional
     @Modifying
-    public void unbanIdea(long id);
+    void unbanIdea(long id);
 
-    List<Idea> findAllBySetOfTags(Set<Tag> tags);
+    @Query(nativeQuery = true, value = "INSERT INTO user_idea (user_id, idea_id) VALUES (:userId,:ideaId)")
+    @Transactional
+    @Modifying
+    void addIdeaToFavorite(@Param("ideaId") long ideaId, @Param("userId") long userId);
+
+    @Query(nativeQuery = true, value = "SELECT EXISTS(SELECT * FROM user_idea WHERE  user_id = :userId AND idea_id = :ideaId)")
+    @Transactional
+    Boolean existsIdeaInUsersFavorite(@Param("ideaId") long ideaId, @Param("userId") long userId);
+
+    @Query(nativeQuery = true, value = "DELETE FROM user_idea WHERE  user_id = :userId AND idea_id = :ideaId")
+    @Transactional
+    @Modifying
+    void deleteIdeaFromFavorite(@Param("ideaId") long ideaId, @Param("userId") long userId);
+
+    @Query(nativeQuery = true, value = "SELECT id FROM idea WHERE id IN (SELECT idea_id from user_idea WHERE user_id = :id)")
+    @Transactional
+    List<Integer> getAllFavoriteIdeasByUserId(@Param("id")long userId);
+
+    @Query("update idea set views = views + 1 where id = :id")
+    @Transactional
+    @Modifying
+    void incrementViews(@Param("id") long ideaId);
 }

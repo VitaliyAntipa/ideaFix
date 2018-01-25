@@ -48,14 +48,14 @@ public class Idea implements Serializable {
     )
     private Set<Tag> setOfTags;
 
-    @OneToMany(mappedBy = "idea",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Media> listOfMedia;
 
     @Formula("(Select count(*) from comment c where c.idea_id = id)")
     private long countOfComments;
 
-    @Formula("(Select count(*) from likes l where l.idea_id = id)")
-    private long countOfLikes;
+    @Column(name = "views")
+    private long amountOfViews;
 
     public Idea(String title, String bigDescription) {
         this.title = title;
@@ -140,20 +140,20 @@ public class Idea implements Serializable {
         this.countOfComments = countOfComments;
     }
 
-    public long getCountOfLikes() {
-        return countOfLikes;
-    }
-
-    public void setCountOfLikes(long countOfLikes) {
-        this.countOfLikes = countOfLikes;
-    }
-
     public List<Comment> getListOfComments() {
         return listOfComments;
     }
 
     public void setListOfComments(List<Comment> listOfComments) {
         this.listOfComments = listOfComments;
+    }
+
+    public long getAmountOfViews() {
+        return amountOfViews;
+    }
+
+    public void setAmountOfViews(long amountOfViews) {
+        this.amountOfViews = amountOfViews;
     }
 
     @Override
@@ -168,7 +168,6 @@ public class Idea implements Serializable {
                 ", setOfTags=" + setOfTags +
                 ", listOfMedia=" + listOfMedia +
                 ", countOfComments=" + countOfComments +
-                ", countOfLikes=" + countOfLikes +
                 '}';
     }
 }

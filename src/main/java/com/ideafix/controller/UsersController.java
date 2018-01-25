@@ -10,6 +10,8 @@ import com.ideafix.service.util.ValidationUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import static com.ideafix.model.response.ControllerResponseEntity.*;
@@ -25,7 +27,9 @@ public class UsersController extends ExceptionHandlerController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Map<String, Object> getAll() {
-        return successResponse("data", userService.getAll());
+        List<User> userList = userService.getAll();
+        userList.stream().forEach(user -> user.setSetOfFavoriteIdea(new HashSet<>()));
+        return successResponse("data", userList);
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -40,10 +44,29 @@ public class UsersController extends ExceptionHandlerController {
                 user = userService.getUserByNickname(nickname);
             }
 
+            user.setSetOfFavoriteIdea(new HashSet<>());
+
             if (user == null)
                 return errorResponse("No user with such id");
 
             return successResponse("data", user);
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET)
+    public Map<String, Object> getCurrentUser()
+            throws RestException {
+        try {
+            JwtUser user = (JwtUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            User currentUser = userService.getUserById(user.getId());
+
+            return successResponse("data", currentUser);
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
@@ -77,15 +100,11 @@ public class UsersController extends ExceptionHandlerController {
                     .getAuthentication()
                     .getPrincipal();
 
-            if (user.getAuthorities()
-                    .iterator()
-                    .next()
-                    .toString()
-                    .equals("ADMIN")
-                    || user.getId() == id) {
+            if (user.getId() == id) {
                 userService.delete(id);
                 return emptyResponse();
             }
+
 
             return errorResponse("You cannot delete User account " +
                     "if it's not your or " +

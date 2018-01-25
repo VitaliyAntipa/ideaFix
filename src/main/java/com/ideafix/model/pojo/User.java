@@ -2,6 +2,7 @@ package com.ideafix.model.pojo;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity(name = "users")
 @Table(name = "users")
@@ -25,6 +26,13 @@ public class User extends AbstractUser implements Serializable {
 
     @Column(name = "about")
     private String about;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_idea",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "idea_id", referencedColumnName = "id")
+    )
+    private Set<Idea> setOfFavoriteIdea;
 
     public User(String name, String nickname, String password,
                 String pic, int age, String email,
@@ -65,7 +73,6 @@ public class User extends AbstractUser implements Serializable {
         this.email = email;
     }
 
-
     public String getCity() {
         return city;
     }
@@ -88,5 +95,13 @@ public class User extends AbstractUser implements Serializable {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public Set<Idea> getSetOfFavoriteIdea() {
+        return setOfFavoriteIdea;
+    }
+
+    public void setSetOfFavoriteIdea(Set<Idea> setOfFavoriteIdea) {
+        this.setOfFavoriteIdea = setOfFavoriteIdea;
     }
 }

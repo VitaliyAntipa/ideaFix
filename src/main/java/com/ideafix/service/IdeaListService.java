@@ -23,5 +23,7 @@ public interface IdeaListService {
 
     IdeaList deleteIdea(long ideaListId, long ideaId);
 
+    void setIdeaListPrivate(long ideaList, long userId, boolean isPrivate);
+
     void delete(long ideaListId);
 }
