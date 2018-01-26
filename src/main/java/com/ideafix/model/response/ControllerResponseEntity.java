@@ -1,7 +1,5 @@
 package com.ideafix.model.response;
 
-import com.ideafix.model.pojo.User;
-
 import java.util.HashMap;
 import java.util.Map;
 

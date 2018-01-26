@@ -38,7 +38,6 @@ public class IdeaController extends ExceptionHandlerController {
             if (idea == null)
                 return errorResponse("No idea by such id");
 
-            ideaService.incrementViews(id);
             return successResponse("data", idea);
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
@@ -167,5 +166,17 @@ public class IdeaController extends ExceptionHandlerController {
         } catch (Exception e) {
             throw new RestException(e.getMessage(), e);
         }
+    }
+
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public Map<String, Object> incrementView(@RequestParam(value = "id") long ideaId) throws RestException {
+        try {
+            ideaService.incrementViews(ideaId);
+
+            return emptyResponse();
+        } catch (Exception e) {
+            throw new RestException(e.getMessage(), e);
+        }
+
     }
 }
