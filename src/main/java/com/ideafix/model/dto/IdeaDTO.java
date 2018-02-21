@@ -9,29 +9,29 @@ import java.util.Set;
 public class IdeaDTO {
     private long ideaId;
     private String title;
-    private String big_description;
+    private String bigDescription;
     private long authorId;
     private Set<Tag> setOfTags;
     private List<MediaDTO> listOfMedia;
 
-    public IdeaDTO(String title, String big_description,
+    public IdeaDTO(String title, String bigDescription,
                    long authorId, Set<Tag> setOfTags,
                    List<MediaDTO> listOfMedia) {
         this.title = title;
-        this.big_description = big_description;
+        this.bigDescription = bigDescription;
         this.authorId = authorId;
         this.setOfTags = setOfTags;
         this.listOfMedia = listOfMedia;
     }
 
     public IdeaDTO(long ideaId, String title,
-                   String big_description,
+                   String bigDescription,
                    long authorId,
                    Set<Tag> setOfTags,
                    List<MediaDTO> listOfMedia) {
         this.ideaId = ideaId;
         this.title = title;
-        this.big_description = big_description;
+        this.bigDescription = bigDescription;
         this.authorId = authorId;
         this.setOfTags = setOfTags;
         this.listOfMedia = listOfMedia;
@@ -40,10 +40,10 @@ public class IdeaDTO {
     public IdeaDTO() {
     }
 
-    public IdeaDTO(String title, String big_description,
+    public IdeaDTO(String title, String bigDescription,
                    long authorId, Set<Tag> setOfTags) {
         this.title = title;
-        this.big_description = big_description;
+        this.bigDescription = bigDescription;
         this.authorId = authorId;
         this.setOfTags = setOfTags;
         this.listOfMedia = new ArrayList<>(0);
@@ -53,8 +53,8 @@ public class IdeaDTO {
         this.title = title;
     }
 
-    public void setBig_description(String big_description) {
-        this.big_description = big_description;
+    public void setBigDescription(String bigDescription) {
+        this.bigDescription = bigDescription;
     }
 
     public void setAuthorId(long authorId) {
@@ -73,8 +73,8 @@ public class IdeaDTO {
         return title;
     }
 
-    public String getBig_description() {
-        return big_description;
+    public String getBigDescription() {
+        return bigDescription;
     }
 
     public long getAuthorId() {

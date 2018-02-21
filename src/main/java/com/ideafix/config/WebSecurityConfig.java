@@ -47,7 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().anyRequest().permitAll();
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .authorizeRequests().antMatchers("/login","/register","/idea","/tag").permitAll();
 
         // Custom JWT based security filter
         httpSecurity

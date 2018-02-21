@@ -2,6 +2,7 @@ package com.ideafix.controller;
 
 import com.ideafix.dao.*;
 import com.ideafix.model.dto.IdeaDTO;
+import com.ideafix.model.dto.IdeaListDTO;
 import com.ideafix.model.dto.MediaDTO;
 import com.ideafix.model.dto.UserDTO;
 import com.ideafix.model.pojo.*;

@@ -35,7 +35,7 @@ public class IdeaServiceImpl implements IdeaService {
         idea.setSetOfTags(tagService.assignTags(newIdea.getSetOfTags()));
         idea.setAuthor(userService.getUserById(newIdea.getAuthorId()));
         idea.setTitle(newIdea.getTitle());
-        idea.setBigDescription(newIdea.getBig_description());
+        idea.setBigDescription(newIdea.getBigDescription());
         idea.setBanned(false);
         idea.setDate(new Date());
 
@@ -59,7 +59,7 @@ public class IdeaServiceImpl implements IdeaService {
 
         mediaService.attachMedia(editIdea.getListOfMedia(), idea);
         idea.setTitle(editIdea.getTitle());
-        idea.setBigDescription(editIdea.getBig_description());
+        idea.setBigDescription(editIdea.getBigDescription());
         idea.setSetOfTags(tagService.assignTags(editIdea.getSetOfTags()));
 
         idea = ideaDAO.saveAndFlush(idea);
